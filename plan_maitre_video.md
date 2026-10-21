@@ -12,7 +12,7 @@
 > **Ce qui change par rapport aux plans précédents :**
 > 1. **Le script suit une structure de rétention** inspirée des chaînes de vulgarisation courtes (Kurzgesagt, TED-Ed, Dr Nozman, Scilabus, Veritasium Shorts) : une question qui reste ouverte, un enchaînement « mais / donc », une relance au milieu et une réponse nette à la fin.
 > 2. **Une règle anti-temps mort**, tirée de la scène « elle goûte avec ses pieds » de la vidéo mouche (voir A0).
-> 3. **Le style pixel art HD est conservé** : les deux vidéos ont marché, le moteur `pixel.py` existe déjà, et le style se reconnaît dans le fil. Une option pour faire varier le style est décrite en A2.
+> 3. **Deux styles au choix** (ligne `STYLE` de B0) : le **pixel art HD** (`pixel`, moteur `douche/pixel.py`) et le **style Vox** (`vox`, collage papier, moteur `lune/vox.py`, validé sur l'épisode Lune). Voir A2.
 
 - **Partie A** : la recette commune (ne change pas d'un épisode à l'autre).
 - **Partie B** : le gabarit d'épisode, à remplir à partir du sujet.
@@ -28,6 +28,7 @@
 |---|---|---|
 | Anesthésie | Chaque scène répond à la question « pourquoi tu ne sens rien ? ». Le fil ne casse jamais : message → portes → portes bouchées → cerveau en pause → objection → fait fou. | — |
 | Mouche | Le hook (tapette + ralenti), le « BEURK », le verdict « NON ! ». | **Scène 2 (« elle goûte avec ses pieds »)** |
+| Lune (style Vox) | **Le collage papier** : vraies photos NASA découpées, surligneur jaune, feutre rouge. **Les graphiques tracés au trait** (courbe de marée « ratée », inclinaison de l'axe, barres, balance) rendent un fait chiffré visible en 2 s. Le mot-choc qui disparaît lettre à lettre. | Le « NON ! » crié + grand tampon rouge, trop appuyé (règle A4). Titres placés sous la barre de progression (à garder sous y = 300). |
 | Douche (v2) | **La chronologie par étapes** (Jour 2 → 1 mois → 3 mois → 1 an) : le spectateur sait où il en est et attend l'étape suivante. **Une réaction des gens à la fin de chaque étape** (collègues, bus, potes, chat) : gag + enjeu personnel. Tampon plein écran + barre de progression. | v1 sans étapes : bonnes infos mais pas de sensation de progression. |
 
 **Pourquoi la scène des pieds ralentit :**
@@ -74,8 +75,33 @@ Règle d'or : **chaque bloc 3×3 de l'image finale a une seule couleur**, et tou
 - Sous-titres : 12 pixels art, blancs avec contour noir de 1 pixel, en groupes de 24 caractères au plus. **Le mot en cours de lecture est surligné** dans la couleur d'accent (style karaoké, comme dans les Shorts à forte rétention).
 - **Changement visuel au moins toutes les 2 s** : nouveau plan, nouvel objet, mouvement de caméra, titre, ou réaction de Pip. C'est le principal levier de rétention du format court.
 
-### Option de style (si tu veux varier)
-Le pixel art HD reste le style par défaut. Pour un sujet très « abstrait » (cosmos, maths, cerveau), un style **« flat cartoon » vectoriel** façon Kurzgesagt (formes rondes, aplats, ombres en une teinte, fond sombre avec lueurs) peut mieux passer. Le même moteur suffit : on garde la palette et la timeline, mais on dessine à 1080×1920 avec l'anticrénelage de Pillow, et on enlève le test « grille pixel » de A8. À décider au cas par cas dans le plan d'épisode (ligne `STYLE` du tableau B0).
+### Style `vox` — collage papier façon Vox (validé sur l'épisode Lune)
+À choisir pour les sujets **science, espace, histoire, chiffres** : tout ce qui gagne à montrer de vraies images et des graphiques. Le moteur est `lune/vox.py` (Pillow + numpy, 1080×1920 anticrénelé, sans agrandissement).
+
+| Élément | Version Vox |
+|---|---|
+| Fond | papier texturé (crème `#efe8dc` ou bleu nuit `#121a2e` / `#1f2b4a`), généré par bruit basse fréquence + fibres ; **grain de film** à 12 i/s et vignette légère (12 %) posés à la toute fin (`finish()`) |
+| Découpages | chaque objet est un `Sprite` : **bord blanc aux ciseaux** (10–12 px) + ombre portée floue décalée (10, 16) ; petit tremblement d'angle (`boil`, ±0,5°, 8 i/s) façon stop motion |
+| Vraies images | photos **du domaine public** (NASA, NOAA, archives libres), téléchargées dans `assets/src/`, découpées en disque ou en silhouette ; crédit obligatoire dans la description. Jamais d'image sous licence restrictive. |
+| Illustrations | aplats simples dessinés en vectoriel (suréchantillonnage ×2–3 puis réduction), sans contour noir ; silhouettes sombres pour la nuit |
+| Titres | bande de papier blanc qui tombe avec un rebond (`title()`), légère rotation (±1,5°), **mot-clé passé au surligneur jaune** (`#ffe14d`) qui s'étale de gauche à droite |
+| Annotations | **feutre rouge** (`#e8402f`) qui se dessine : cercle à main levée, flèche, croix ; **écriture manuscrite** qui apparaît lettre à lettre |
+| Données | **graphiques tracés au trait** (courbe noire = normal, courbe rouge = ce qui change), barres, balance, règle ; étiquettes en police mono sur fond jaune |
+| Archives | coupure de journal (titre en serif, colonnes en traits gris) pour une réaction ou une idée reçue |
+| Sous-titres | bande blanche, Work Sans Bold 66 px en capitales, **le mot en cours passé au surligneur** (karaoké) |
+| Caméra | zoom lent façon banc-titre (+3,5 % par scène), mouvements continus autorisés |
+| Transitions | entre scènes : **volet « papier déchiré »** (0,45 s) ; entre plans : coupes franches (C6) |
+| Pip | même personnage, en **découpage papier** (aplats, ombre en croissant, bord blanc) ; le costume se pose par-dessus le découpage (ex. bulle de casque transparente) |
+| Polices (OFL, dans `assets/`) | Work Sans Bold (titres, sous-titres), DM Mono (étiquettes, barre, tampons), Libre Baskerville (journal), Nothing You Could Do (manuscrit). **Vérifier les glyphes** : DM Mono n'a ni « ↑ » ni « → » ni « ⁶ ». |
+
+Mise en page (1080×1920) : barre de progression y 40–170, **titres à partir de y = 300**, scène principale y 450–1450, sous-titres y 1526–1626 ; rien d'important sous y = 1650 (interface des Shorts). Pip ≤ 15 % de la largeur, jamais dans la zone des sous-titres.
+
+Tampon de chronologie (C3) en Vox : écran assombri, **bandeau papier surligné** qui claque (échelle 1,35 → 1), puis sous-titre tapé à la machine en mono (« T + 6 H »). Barre de progression (C4) : règle papier blanche, points rouges par étape, remplissage au surligneur.
+
+Palette Vox : fixes = papier, encre `#1b1b1f`, nuits, jaune surligneur, rouge feutre, Pip ; **thème** = 8 à 12 couleurs choisies pour le sujet (B0). Pas de quantification : dégradés, flous et transparences sont permis.
+
+### Style `flat` (variante sans collage)
+Pour un sujet très « abstrait » (maths, cerveau), un **« flat cartoon »** façon Kurzgesagt (formes rondes, aplats, fond sombre avec lueurs) : même moteur `vox.py`, sans texture papier, sans bord blanc ni photos.
 
 ### Le personnage-sujet (optionnel)
 Quand le sujet a un « acteur » (une mouche, un virus, une molécule, une planète…), on lui donne une **petite personnalité** (effronté, paresseux, pressé…) et un tic visuel (se frotter les pattes, cligner, tourner sur lui-même). Il devient le deuxième personnage, et Pip peut s'effacer dans les scènes où il est la star.
@@ -135,7 +161,10 @@ Un flash-back éventuel utilise une sous-palette de 6 teintes sépia.
 | Le plus fou / conseil | émerveillé ou complice | `[excited]` / `[cheerful]` | 0,3 | 1,06 |
 | Fin | énergique | `[excited]` | 0,3 | 1,10 |
 
-## A5. Musique et bruitages (`sfx.py`), version chiptune
+## A5. Musique et bruitages (`sfx.py`)
+**Style `vox` :** musique « documentaire » à la place du chiptune (pad doux + arpège pincé + grosse caisse douce et charleston, 108 à 116 BPM, mineur → majeur sur la fin), mêmes règles de volume, de coupure avant la réponse et de sourdine. Bruitages papier : feuille qui glisse (transition), machine à écrire (tampon), coup de tampon, feutre, ciseaux. Le reste de cette section décrit la version chiptune (`pixel`).
+
+**Style `pixel`, version chiptune :**
 Tout est synthétisé en numpy (original, libre de droits).
 - **Musique** : chiptune avec mélodie en onde carrée, basse en triangle et percussions en bruit blanc. 116 à 126 BPM, tonalité et ambiance choisies par épisode (B0). −16,5 dB sous la voix.
   - **Coupure musicale** (la musique se tait 0,5 s) juste avant la réponse principale : effet « silence avant la révélation ».
@@ -230,8 +259,8 @@ Règles propres à la chronologie :
 2. Hook ≤ 3,0 s.
 3. `ffprobe` : 1080×1920, 30 fps, une piste audio, ≤ 60 s.
 4. `silencedetect` (−50 dB, 0,3 s) : aucun silence.
-5. **Grille pixel** : chaque bloc 3×3 est uniforme, y compris pendant les ralentis et les traînées (sauf si `STYLE = flat`).
-6. **Palette** : toutes les couleurs sont dans la palette (avant encodage).
+5. **Grille pixel** : chaque bloc 3×3 est uniforme, y compris pendant les ralentis et les traînées (`pixel` seulement).
+6. **Palette** : toutes les couleurs sont dans la palette (avant encodage) (`pixel` seulement). En `vox` / `flat`, à la place : aucun glyphe manquant (carré vide) dans les textes, et **vidéo finale < 100 Mo** (limite GitHub ; le grain gonfle le fichier : encoder en `-crf 24 -preset slow`).
 7. **Placement** : la boîte de Pip ne chevauche jamais un titre, un sous-titre, le personnage-sujet ou l'élément cible.
 8. **Variété** (table `PIP_ACTIONS` du script d'épisode) :
    - Pip absent d'au moins 2 scènes ;
@@ -245,7 +274,7 @@ Règles propres à la chronologie :
 11. **Fil** (relecture humaine) : pour chaque scène, compléter la phrase « Cette scène rapproche de la réponse à *<question du titre>* parce que… ». Si on ne trouve pas, la scène est réécrite ou coupée (R1).
 12. **Chronologie** (si variante utilisée) : chaque étape a son repère de temps en premier mot, son tampon, et une réaction sociale en dernière phrase ; la barre de progression est visible de la 1re à la dernière étape.
 
-Note : encoder en `-crf 16 -pix_fmt yuv420p` **après** l'agrandissement ×3, jamais avant.
+Note : en `pixel`, encoder en `-crf 16 -pix_fmt yuv420p` **après** l'agrandissement ×3, jamais avant. En `vox`, `-crf 24 -preset slow` (≈ 40 Mo pour 58 s).
 
 ---
 
@@ -262,7 +291,8 @@ Note : encoder en `-crf 16 -pix_fmt yuv420p` **après** l'agrandissement ×3, ja
 | Titres de secours | <2 autres titres> |
 | Réponse en une phrase | <la réponse que donne la scène 5> |
 | Ton | <ludique / mystérieux / « beurk-rigolo » / émerveillé…> |
-| STYLE | `pixel` (par défaut) ou `flat` |
+| STYLE | `pixel` (pixel art HD), `vox` (collage papier) ou `flat` — voir A2 |
+| Images d'archive (si `vox`) | <photos du domaine public : source, identifiant, crédit> |
 | STRUCTURE | `classique` (A7) ou `chronologie` (variante A7) |
 | Étapes (si chronologie) | <3 ou 4 repères, ex. Jour 2 / 1 mois / 3 mois / 1 an> |
 | Réactions sociales | <une par étape, de plus en plus forte> |
@@ -343,7 +373,9 @@ PIP_ACTIONS = {
 | `episode_<slug>.py` | chorégraphie des scènes, table `PIP_ACTIONS`, caméra, titres et sous-titres → `renders/<slug>.mp4` |
 | `snap.py` | images fixes de contrôle et tests de A8 (dont les tests de rythme) |
 
-Référence : l'épisode `douche/` contient le moteur complet et réutilisable — `stage_overlay()` (tampon + barre + badge), `cut()` (coupes par phrase), décors sociaux (`office`, `bus`, `phone` + `chat_bubble`, `street`, `person`, `cat`), et le correctif de la cédille « Ç » dans `pixel.py`. Pour un nouvel épisode, copier `douche/` et ne réécrire que `tts.py` (SCRIPT), `timeline.py` (événements), `decors_<slug>.py` et `episode_<slug>.py`.
+**Style `vox`** : l'épisode `lune/` est la référence. Il contient `vox.py` (moteur : papier, grain, `Sprite` découpé, `put()`, surligneur, feutre, écriture manuscrite, trame, `photo_disc()` pour détourer une planète, volet papier déchiré, caméra, rendu sur 4 processus), `pip_vox.py` (Pip en papier découpé), `episode_lune.py` (`title()`, `label()`, `hand()`, `stage_overlay()` en version Vox, sous-titres surlignés, graphiques tracés au trait) et un `snap.py` adapté. Pour un nouvel épisode Vox, copier `lune/` et ne réécrire que `tts.py` (SCRIPT), `timeline.py`, `decors_<slug>.py` et `episode_<slug>.py`. Le plan s'appelle alors `plan_<slug>_vox.md`.
+
+**Style `pixel`** : l'épisode `douche/` contient le moteur complet et réutilisable — `stage_overlay()` (tampon + barre + badge), `cut()` (coupes par phrase), décors sociaux (`office`, `bus`, `phone` + `chat_bubble`, `street`, `person`, `cat`), et le correctif de la cédille « Ç » dans `pixel.py`. Pour un nouvel épisode, copier `douche/` et ne réécrire que `tts.py` (SCRIPT), `timeline.py` (événements), `decors_<slug>.py` et `episode_<slug>.py`.
 
 Le script principal s'appelle toujours `episode_<slug>.py`, pour ne jamais entrer en conflit avec le module d'un personnage.
 
@@ -357,6 +389,7 @@ uv run python sfx.py                                # musique + bruitages -> aud
 uv run python snap.py 0 0.5 1.2 5 10 20 30 40 48    # images de contrôle + tests A8 -> renders/
 uv run python episode_<slug>.py --preview           # aperçu 360x640
 uv run python episode_<slug>.py --final             # final 1080x1920, 30 fps, avec audio/mix.wav
+# en style vox, le rendu final tourne sur 4 processus (~4 min pour 58 s)
 ```
 
 **Note technique :** tout est dessiné en 360×640 en indices de palette (numpy `uint8`). Ralenti et accéléré se font **dans la timeline** (temps local de la scène modifié, poses tenues). Ne jamais interpoler entre deux images, ce qui créerait des couleurs hors palette. Les traînées sont des copies tramées décalées d'un nombre entier de pixels. Conversion en couleurs et agrandissement ×3 (`np.repeat`) à la toute fin, puis ffmpeg (`-f rawvideo`, `-crf 16`). Ne jamais redimensionner avec un filtre lissant.
@@ -382,6 +415,6 @@ uv run python episode_<slug>.py --final             # final 1080x1920, 30 fps, a
 6. **Tester le fil** (A8-11) scène par scène, et le débit (A8-10) en comptant les mots par scène.
 7. **Choisir les visuels** : un décor du quotidien pour l'accroche, une vue macro / coupe pour le mécanisme, un écran partagé ou un ralenti / accéléré pour l'objection. Un changement visuel toutes les 2 s au plus.
 8. **Distribuer Pip** : absent d'au moins 2 scènes, familles alternées, gags calés sur la phrase en cours. Remplir `PIP_ACTIONS`.
-9. **Choisir la palette thème (14 couleurs), la musique et les bruitages propres.**
+9. **Choisir le style** (`pixel` ou `vox`, voir A2), **la palette thème, la musique et les bruitages propres.** En `vox`, chercher aussi les images d'archive du domaine public (NASA, NOAA…) et noter leur crédit.
 10. **Écrire la section Exactitude**, puis désigner les 2 phrases à couper si la vidéo dépasse 55 s.
-11. **Rendre** `plan_<slug>_pixel.md` avec les sections B0 à B5 remplies.
+11. **Rendre** `plan_<slug>_pixel.md` (ou `plan_<slug>_vox.md`) avec les sections B0 à B5 remplies.
