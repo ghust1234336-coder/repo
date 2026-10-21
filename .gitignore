@@ -1,0 +1,8 @@
+# caveman build tooling copied alongside its skills; not skills themselves
+.claude/skills/activation-rule.mjs
+.claude/skills/compile.mjs
+.claude/skills/engine-mcp-tools.json
+.claude/skills/registry.json
+.claude/skills/verbs-gate.mjs
+.claude/skills/generated/
+.claude/skills/native/
