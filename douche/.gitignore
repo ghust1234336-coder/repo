@@ -1,0 +1,6 @@
+.env
+__pycache__/
+audio/takes/
+audio/voice_raw.wav
+renders/*.png
+renders/douche_preview.mp4
