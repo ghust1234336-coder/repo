@@ -1,0 +1,7 @@
+.env
+__pycache__/
+audio/takes/
+audio/voice_raw.wav
+renders/*.png
+renders/_part*
+renders/lune_preview.mp4
