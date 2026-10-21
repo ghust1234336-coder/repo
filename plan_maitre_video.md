@@ -5,6 +5,7 @@
 > **Prompt à utiliser :**
 > ```
 > Sujet : <ton sujet>
+> (Claude peut réécrire le sujet ou le titre s'il trouve mieux : voir Partie D, étape 0.)
 > Utilise plan_maitre_video.md pour écrire plan_<slug>_pixel.md (Partie B remplie, Partie A reprise sans changement sauf la palette thématique et les bruitages).
 > ```
 >
@@ -255,7 +256,8 @@ Note : encoder en `-crf 16 -pix_fmt yuv420p` **après** l'agrandissement ×3, ja
 ## B0. Fiche d'identité
 | Champ | Valeur |
 |---|---|
-| Sujet | <sujet donné> |
+| Sujet donné | <le sujet ou le titre tel que tu l'as écrit> |
+| Sujet retenu | <la version réécrite par Claude, ou « inchangé »> + 1 ligne : pourquoi c'est mieux |
 | **Question du titre** | <question concrète, avec « tu » ou « ta », ≤ 8 mots> |
 | Titres de secours | <2 autres titres> |
 | Réponse en une phrase | <la réponse que donne la scène 5> |
@@ -362,6 +364,17 @@ uv run python episode_<slug>.py --final             # final 1080x1920, 30 fps, a
 ---
 
 # Partie D — Procédure de génération (ce que Claude fait quand tu donnes un sujet)
+
+0. **Réécrire le sujet ou le titre si c'est mieux (autorisé, et même encouragé).** Le sujet ou le titre donné est un point de départ, pas une consigne figée. Claude peut le reformuler, le resserrer, changer d'angle ou de durée, ou passer à la variante chronologie, si ça donne une vidéo plus forte. Exemples :
+   - *« que se passe-t-il si on ne prend pas de douche pendant un an »* → **« Un an sans douche, il se passe quoi ? »** (plus court, avec « tu », et la question est posée en moins de 3 s) ;
+   - *« le sommeil »* → **« Et si tu ne dormais plus pendant une semaine ? »** (un enjeu personnel et une chronologie possible, au lieu d'une définition).
+
+   Garde-fous :
+   - **garder l'intention** : même thème, même ton, même public. On améliore l'angle, on ne change pas de sujet ;
+   - **toujours montrer les deux versions** : le sujet donné et le sujet retenu, dans B0 et dans le message de réponse, avec **une ligne** qui dit pourquoi c'est mieux (hook plus fort, enjeu personnel, faits plus solides, meilleure chronologie…) ;
+   - si la réécriture **change le fond** (autre sujet, autre public, autre durée que celle demandée explicitement), **proposer d'abord** sans produire, et demander de valider ;
+   - si le sujet donné est déjà bon, l'écrire (« inchangé ») et ne pas réécrire pour le principe ;
+   - l'exactitude passe avant le hook : pas de titre plus accrocheur mais faux.
 
 1. **Trouver la question.** Transformer le sujet en question concrète, avec un paradoxe ou un enjeu personnel. *Sujet « le sommeil » → « Pourquoi tu ne peux pas rester éveillé ? »* Proposer 3 titres et en retenir un.
    **Choisir la structure** : si le sujet se raconte dans le temps (« et si tu… pendant un an ? »), prendre la **variante chronologie** de A7 et fixer les 3–4 étapes + une réaction sociale par étape.
