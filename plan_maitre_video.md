@@ -27,6 +27,7 @@
 |---|---|---|
 | Anesthésie | Chaque scène répond à la question « pourquoi tu ne sens rien ? ». Le fil ne casse jamais : message → portes → portes bouchées → cerveau en pause → objection → fait fou. | — |
 | Mouche | Le hook (tapette + ralenti), le « BEURK », le verdict « NON ! ». | **Scène 2 (« elle goûte avec ses pieds »)** |
+| Douche (v2) | **La chronologie par étapes** (Jour 2 → 1 mois → 3 mois → 1 an) : le spectateur sait où il en est et attend l'étape suivante. **Une réaction des gens à la fin de chaque étape** (collègues, bus, potes, chat) : gag + enjeu personnel. Tampon plein écran + barre de progression. | v1 sans étapes : bonnes infos mais pas de sensation de progression. |
 
 **Pourquoi la scène des pieds ralentit :**
 1. **Elle ne fait pas avancer la question du titre.** « Tu la jettes ? » n'a pas de lien avec le goût des pieds. Le spectateur sent un détour, alors qu'il attend la réponse.
@@ -179,6 +180,31 @@ Construite sur le principe « **mais / donc** » : chaque scène commence par un
 
 Les scènes 6 et 7 peuvent être fusionnées si le sujet est simple (7 scènes au total). On ne descend jamais sous 7 scènes, et on ne dépasse jamais 8.
 
+### Variante « chronologie » (sujets du type « que se passe-t-il si… pendant X ? »)
+Validée sur l'épisode douche. À utiliser dès que le sujet **évolue dans le temps** (un an sans dormir / sans sucre / sans téléphone, un corps dans l'espace, une plante sans eau…).
+
+| # | Rôle | Contenu |
+|---|---|---|
+| 1 | Accroche | La situation + la question (« Tu arrêtes X pendant un an. Il se passe quoi ? ») |
+| 2 | Étape 1 (court terme : heures / jours) | 1 à 2 phrases sur le corps ou l'objet + **1 phrase de réaction sociale** |
+| 3 | Étape 2 (≈ 1 mois) | idem — c'est l'étape « mécanisme » (coupe, macro, accéléré) |
+| 4 | Étape 3 (≈ 3 mois) | idem — commence par « Sauf qu'à… » (rebondissement, ≈ 40 % de la vidéo) |
+| 5 | Étape 4 (fin de la période) | la **réponse nette** au titre (coupure musicale avant) + la réaction sociale la plus forte, en gag final (« même ton chat fait ses valises ») |
+| 6 | Objection | « Mais alors… ? » |
+| 7 | Conseil | ce qu'on retient |
+| 8 | Fin | boucle vers l'accroche + abonnement |
+
+Règles propres à la chronologie :
+- **C1. 3 ou 4 étapes**, jamais plus (au-delà, la vidéo dépasse 60 s). Étapes de durée croissante : jours → mois → année.
+- **C2. Chaque étape commence par son repère de temps** dit à voix haute, en premier mot (« Jour deux : … », « Un mois : … », « Sauf qu'à trois mois… », « Un an plus tard ? »).
+- **C3. Tampon plein écran** sur ce repère : fond assombri (tramage noir 10/16), libellé géant 64 px qui tremble, bruitage « stamp ». Il dure du premier mot du repère jusqu'à 0,25 s après la fin du repère.
+- **C4. Barre de progression** en haut de l'écran pendant toutes les étapes (J0 → fin, un repère par étape, remplissage jaune animé), avec le **badge de l'étape** dessous (texte 26 px au moins : en dessous, les chiffres « 2 » / « 3 » ressemblent à des « 8 »). Les titres des scènes descendent de 38 px pour laisser la place.
+- **C5. Une réaction sociale par étape**, en dernière phrase, avec son propre plan du quotidien (bureau, bus, téléphone, rue…). Elle est **de plus en plus forte** d'une étape à l'autre (reculer d'un pas → place vide → messages ignorés → tout le monde fuit, même l'animal). Les gens sont des silhouettes grises simples ; leur réaction se lit en un geste (reculer, pince à linge, « ! », fuite).
+- **C6. Coupes franches entre les plans d'une même étape**, calées sur le début de la phrase, avec un whoosh 0,08 s avant. Le volet mosaïque reste réservé aux changements de scène.
+- **C7. L'état de Pip empire d'une étape à l'autre** (taches, croûte, champignon sur le bonnet…) : on voit le temps passer sur lui.
+- **C8. Pip joue « toi »** : il peut être présent à chaque étape. Dans ce cas, la règle A6-1 devient « absent d'au moins une scène entière **et** de plusieurs plans » (macro, loupe, téléphone…).
+- Budget : 170 à 180 mots, 52 à 58 s. Si ça dépasse, couper d'abord une phrase « corps » secondaire, jamais une réaction sociale ni un repère de temps.
+
 ### Règles du hook
 1. Pas d'intro : la première image est déjà en mouvement.
 2. Titre-question à l'écran avant 0,5 s.
@@ -215,6 +241,7 @@ Les scènes 6 et 7 peuvent être fusionnées si le sujet est simple (7 scènes a
     - débit moyen entre 3,2 et 3,6 mots/s, et aucune scène sous 2,8 mots/s (c'est là que la vidéo mouche ralentissait) ;
     - « … » au plus une fois par scène.
 11. **Fil** (relecture humaine) : pour chaque scène, compléter la phrase « Cette scène rapproche de la réponse à *<question du titre>* parce que… ». Si on ne trouve pas, la scène est réécrite ou coupée (R1).
+12. **Chronologie** (si variante utilisée) : chaque étape a son repère de temps en premier mot, son tampon, et une réaction sociale en dernière phrase ; la barre de progression est visible de la 1re à la dernière étape.
 
 Note : encoder en `-crf 16 -pix_fmt yuv420p` **après** l'agrandissement ×3, jamais avant.
 
@@ -234,6 +261,9 @@ Note : encoder en `-crf 16 -pix_fmt yuv420p` **après** l'agrandissement ×3, ja
 | Réponse en une phrase | <la réponse que donne la scène 5> |
 | Ton | <ludique / mystérieux / « beurk-rigolo » / émerveillé…> |
 | STYLE | `pixel` (par défaut) ou `flat` |
+| STRUCTURE | `classique` (A7) ou `chronologie` (variante A7) |
+| Étapes (si chronologie) | <3 ou 4 repères, ex. Jour 2 / 1 mois / 3 mois / 1 an> |
+| Réactions sociales | <une par étape, de plus en plus forte> |
 | Décor principal | <lieu du quotidien où se passe l'accroche> |
 | Personnage-sujet | <nom, personnalité, tic visuel> ou « aucun » |
 | Costume de Pip | <accessoire lié au sujet> |
@@ -311,6 +341,8 @@ PIP_ACTIONS = {
 | `episode_<slug>.py` | chorégraphie des scènes, table `PIP_ACTIONS`, caméra, titres et sous-titres → `renders/<slug>.mp4` |
 | `snap.py` | images fixes de contrôle et tests de A8 (dont les tests de rythme) |
 
+Référence : l'épisode `douche/` contient le moteur complet et réutilisable — `stage_overlay()` (tampon + barre + badge), `cut()` (coupes par phrase), décors sociaux (`office`, `bus`, `phone` + `chat_bubble`, `street`, `person`, `cat`), et le correctif de la cédille « Ç » dans `pixel.py`. Pour un nouvel épisode, copier `douche/` et ne réécrire que `tts.py` (SCRIPT), `timeline.py` (événements), `decors_<slug>.py` et `episode_<slug>.py`.
+
 Le script principal s'appelle toujours `episode_<slug>.py`, pour ne jamais entrer en conflit avec le module d'un personnage.
 
 ## Commandes
@@ -332,6 +364,7 @@ uv run python episode_<slug>.py --final             # final 1080x1920, 30 fps, a
 # Partie D — Procédure de génération (ce que Claude fait quand tu donnes un sujet)
 
 1. **Trouver la question.** Transformer le sujet en question concrète, avec un paradoxe ou un enjeu personnel. *Sujet « le sommeil » → « Pourquoi tu ne peux pas rester éveillé ? »* Proposer 3 titres et en retenir un.
+   **Choisir la structure** : si le sujet se raconte dans le temps (« et si tu… pendant un an ? »), prendre la **variante chronologie** de A7 et fixer les 3–4 étapes + une réaction sociale par étape.
 2. **Écrire la réponse en une phrase.** Si elle n'est pas claire, la question est mal choisie : revenir à l'étape 1.
 3. **Rassembler 5 à 7 faits vérifiés.** Garder seulement ceux qui servent la réponse (R1). Classer : déclic, mécanisme, idée reçue (rebondissement), objection probable, fait le plus fou / conseil.
 4. **Placer les faits dans les 8 rôles de A7.** Écrire chaque transition en « Sauf que / Mais alors / Résultat », jamais « Et aussi ».

@@ -1,6 +1,6 @@
 # Plan vidéo — « Un an sans douche, il se passe quoi ? » avec Pip (pixel art HD)
 
-Recette : voir `plan_maitre_video.md`, Partie A (reprise sans changement, sauf la palette thématique et les bruitages ci-dessous).
+Recette : voir `../plan_maitre_video.md`, Partie A (reprise sans changement, sauf la palette thématique et les bruitages ci-dessous).
 
 ## B0. Fiche d'identité
 | Champ | Valeur |
