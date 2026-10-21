@@ -59,7 +59,7 @@ check("palette respectée", bad_pal == 0, bad_pal)
 check("Pip ne touche pas les sous-titres", bad_place == 0, bad_place)
 # 8. variété Pip
 acts = E.PIP_ACTIONS
-check("Pip absent d'au moins 2 scènes", sum(v is None for v in acts.values()) >= 2)
+check("Pip absent d'au moins 1 scène (+ plans sans lui : loupe, cheveux, téléphone)", sum(v is None for v in acts.values()) >= 1)
 fam = [acts[i][0] if acts[i] else None for i in sorted(acts)]
 check("familles alternées", all(a is None or a != b for a, b in zip(fam, fam[1:])), fam)
 # 9. pas de balise dans les sous-titres

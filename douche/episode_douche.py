@@ -13,10 +13,10 @@ from timeline import W as Wd, S as Sd, BOUNDS
 
 PIP_ACTIONS = {
     1: ("utiliser_objet", "ferme le robinet"),
-    2: ("reagir", "se bouche le nez"),
-    3: None,
-    4: ("subir", "envahi par les champignons, se gratte"),
-    5: ("reagir", "seul, cligne, boule d'herbe"),
+    2: ("reagir", "se bouche le nez, puis les collègues reculent"),
+    3: ("se_deplacer", "transporté en bus, la place d'à côté reste vide"),
+    4: ("subir", "envahi par les champignons, se gratte (absent du plan téléphone)"),
+    5: ("reagir", "seul, son chat part avec sa valise"),
     6: ("agir_corps", "renifle son aisselle"),
     7: None,
     8: ("agir_corps", "saute sur le bouton S'ABONNER"),
@@ -80,12 +80,57 @@ def skin_patch(c, t):
             rect(c, x0 + i, y0 - int(4 * np.sin(i / 5 + k)), 1, 1, CRUST)
 
 
+# --- étapes : barre de progression + tampon « JOUR 2 / 1 MOIS / 3 MOIS / 1 AN » ---
+STAGES = {1: ("JOUR 2", 0.08, "jour", "deux"), 2: ("1 MOIS", 0.33, "un", "mois"),
+          3: ("3 MOIS", 0.62, "trois", "mois"), 4: ("1 AN", 1.0, "un", "an")}
+TY = 38  # décalage des titres sous le bandeau d'étape
+
+
+def stage_overlay(c, t, si):
+    label, pos, w0, w1 = STAGES[si]
+    prev = STAGES[si - 1][1] if si - 1 in STAGES else 0.0
+    t0 = Wd(si, w0)
+    t1 = Wd(si, w1, end=True) + 0.25
+    p = prev + (pos - prev) * ease_out(prog(t, t0, t1))
+    # barre
+    x0, x1, y = 24, 336, 10
+    rect(c, x0 - 2, y - 2, x1 - x0 + 4, 10, NIGHT); rect(c, x0, y, x1 - x0, 6, NIGHT3)
+    rect(c, x0, y, int((x1 - x0) * p), 6, YELLOW)
+    for k, (lab, q, *_r) in STAGES.items():
+        mx = x0 + int((x1 - x0) * q) - 1
+        rect(c, mx - 1, y - 3, 4, 12, NIGHT); rect(c, mx, y - 2, 2, 10, WHITE if q <= p + 1e-6 else GREY)
+    # étiquette fixe sous la barre
+    if t >= t1 - 0.05:
+        badge(c, 180, 24, label, fg=NIGHT, bg=YELLOW, size=26)
+    # tampon plein écran
+    if t0 - 0.15 <= t < t1:
+        dither(c, np.ones((H, W), bool), BLACK, 10)
+        b = title_bounce(t, t0 - 0.15, dur=0.25, h=60) or 0
+        draw_text(c, [(label, YELLOW, "shake")], W // 2, 250 + b, 64, t=t)
+        rect(c, 70, 340 + b, 220, 4, YELLOW)
+
+
+def cut(t, *starts):
+    """Indice du plan en cours (coupes franches calées sur les phrases)."""
+    return sum(t >= s for s in starts)
+
+
+# ---------------- scène 2 : JOUR 2 — aisselle puis bureau ----------------
 def s2(c, t):
+    t_bur = Sd(1, 2)
+    if t < t_bur:
+        s2_loupe(c, t)
+    else:
+        s2_bureau(c, t)
+    stage_overlay(c, t, 1)
+
+
+def s2_loupe(c, t):
     skin_patch(c, t)
-    t_b, t_eat, t_pue, t_buf = Wd(1, "bact"), Wd(1, "mangent"), Wd(1, "puent"), Wd(1, "buffet")
+    t_b, t_eat, t_pue = Wd(1, "bact"), Wd(1, "mangent"), Wd(1, "pue")
     t0 = BOUNDS[1]
     for i, (x, y) in enumerate(DROPS):
-        age = t - (t0 + 0.15 + i * 0.1)
+        age = t - (t0 + 0.6 + i * 0.1)
         if age < 0: continue
         te = t_eat + i * 0.1
         k = 1 - prog(t, te, te + 0.3)
@@ -95,48 +140,59 @@ def s2(c, t):
         c[dilate(m)] = NIGHT3; c[m] = WATER
         rect(c, x - r // 2, y - r // 2, 2, 2, WHITE)
         if t < t_b and (i + int(t * 4)) % 3 == 0: sparkle(c, x + r + 3, y - r - 3, t)
-    # bactéries
     for i, ((sx, sy, r), (dx, dy)) in enumerate(zip(BACTS, DROPS)):
         p = ease_out(prog(t, t_b + i * 0.07, t_b + i * 0.07 + 0.45))
         if p <= 0: continue
         x = sx + (dx - 10 - sx) * p; y = sy + (dy - sy) * p
         eating = t_eat + i * 0.1 - 0.1 < t < t_eat + i * 0.1 + 0.5
-        bact(c, x, y, r + (2 if t > t_pue else 0), t, chomp=eating, lick=t > t_buf, seed=i)
+        bact(c, x, y, r + (2 if t > t_pue else 0), t, chomp=eating, lick=t > t_pue, seed=i)
         if t > t_pue: stink(c, int(x), int(y) - r - 4, t + i * 0.3, n=2, h=26)
     if t > t_pue:
         cloud(c, 180, 230 - 20 * prog(t, t_pue, t_pue + 2), 30, STINK, int(6 * prog(t, t_pue, t_pue + 0.3)))
-    # panneau buffet
-    if t > t_buf:
-        b = title_bounce(t, t_buf, h=30) or 0
-        rect(c, 120, 196 + b, 2, 18, CRUST); rect(c, 238, 196 + b, 2, 18, CRUST)
-        rect(c, 99, 212 + b, 162, 30, NIGHT); rect(c, 100, 213 + b, 160, 28, YELLOW)
-        draw_text(c, [("BUFFET", RED)], 180, 213 + b, 24, outline=None, shadow=False)
     vignette(c, 180, 320, 140)
-    # étiquette loupe
     draw_text(c, [("AISSELLE", WHITE)], 180, 455, 16, outline=NIGHT, shadow=False)
-    # Pip, hors de la loupe
     pue = t > t_pue
     PIP_BOX["box"] = pip(c, 44, 532, t, pose="pinch" if pue else "idle",
                          mood="yuck" if pue else ("wow" if t > t_b else "smile"), look=(1, -1))
     if pue: stink(c, 44, 488, t, n=2, h=20)
-    # titres
     if Wd(1, "rien") - 0.25 < t < t_pue:
-        title(c, t, Wd(1, "rien") - 0.25, [("0", YELLOW), (" ODEUR", WHITE)], 70, 34)
+        title(c, t, Wd(1, "rien") - 0.25, [("0", YELLOW), (" ODEUR", WHITE)], 70 + TY, 34)
     if t >= t_pue:
-        title(c, t, t_pue, [("ÇA ", WHITE), ("PUE", STINK, "shake"), (" !", WHITE)], 66, 44)
+        title(c, t, t_pue, [("ÇA ", WHITE), ("PUE", STINK, "shake"), (" !", WHITE)], 66 + TY, 44)
 
 
-# ---------------- scène 3 : mécanisme (coupe en accéléré) ----------------
+def s2_bureau(c, t):
+    t0, t_rec = Sd(1, 2), Wd(1, "reculent")
+    office(c, t)
+    back = ease_out(prog(t, t_rec, t_rec + 0.35))
+    person(c, 70 - int(40 * back), 470, t, flip=back > 0.3, clothespin=back > 0.5)
+    person(c, 292 + int(40 * back), 470, t + 0.4, flip=back <= 0.3, col=NIGHT3 if False else GREY)
+    if back > 0.3:
+        draw_text(c, [("!", RED)], 70 - int(40 * back), 380, 22, t=t, shake="shake")
+        draw_text(c, [("!", RED)], 292 + int(40 * back), 380, 22, t=t, shake="shake")
+    PIP_BOX["box"] = pip(c, 172, 470, t, pose="happy" if t < t_rec else "surprised",
+                         mood="smile" if t < t_rec else "wow", spots=0)
+    stink(c, 172, 424, t, n=3, h=26)
+    title(c, t, t0, [("AU BUREAU", WHITE)], 70 + TY, 30)
+    if t > t_rec:
+        title(c, t, t_rec, [("-1 PAS", RED, "shake")], 116 + TY, 26)
+
+
+# ---------------- scène 3 : 1 MOIS — croûte, cheveux, bus ----------------
 SURF = 250
 
 
 def s3(c, t):
+    k = cut(t, Sd(2, 2), Sd(2, 3))
+    (s3_coupe, s3_cheveux, s3_bus)[k](c, t)
+    stage_overlay(c, t, 2)
+
+
+def s3_coupe(c, t):
     t0 = BOUNDS[2]
-    t_30, t_seb, t_col, t_sem, t_cr = (Wd(2, "trente"), Wd(2, "sébum"), Wd(2, "collent"),
-                                       Wd(2, "semaines"), Wd(2, "croûte"))
-    fast = t >= t_sem
+    t_30, t_seb, t_form, t_cr = Wd(2, "trente"), Wd(2, "sébum"), Wd(2, "forment"), Wd(2, "croûte")
+    fast = t >= t_seb
     vgrad(c, 0, SURF, [NIGHT, NIGHT2, NIGHT3])
-    # couches
     rect(c, 0, SURF, W, 26, SKIN)
     for y in range(SURF, SURF + 26, 7):
         off = (y // 7) % 2 * 10
@@ -150,76 +206,95 @@ def s3(c, t):
     rect(c, 0, SURF + 116, W, H - SURF - 116, SKIN_D)
     dither(c, YY > SURF + 116, CRUST, 4)
     dither(c, YY > 520, CRUST, 10)
-    # poil + glande sébacée
     line(c, 132, SURF + 150, 120, SURF - 70, NIGHT, 5); line(c, 132, SURF + 150, 120, SURF - 70, CRUST, 3)
     ellipse(c, 133, SURF + 152, 8, 10, SKIN_D, NIGHT)
     gland = 1 + (int(pose_t(t) * 4) % 2 if t > t_seb else 0)
     ellipse(c, 158, SURF + 80, 14 + gland, 11 + gland, SEBUM, NIGHT)
     rect(c, 152, SURF + 74, 3, 2, WHITE)
-    # sébum qui remonte puis s'étale
     if t > t_seb:
-        p = prog(t, t_seb, t_seb + 0.5)
         for k in range(4):
             yy = SURF + 70 - ((t - t_seb) * 160 + k * 18) % 80
             rect(c, 140 - (SURF + 70 - yy) * 0.15, yy, 3, 3, SEBUM)
-        spread = ease_out(prog(t, t_seb + 0.3, t_col + 0.6))
+        spread = ease_out(prog(t, t_seb + 0.2, t_form + 0.4))
         x0, x1 = int(126 - 126 * spread), int(126 + 240 * spread)
         rect(c, x0, SURF - 4, x1 - x0, 4, SEBUM)
-        dither(c, (YY >= SURF - 6) & (YY < SURF - 4) & (XX >= x0) & (XX < x1), SEBUM, 8)
-    # pellicules
-    n_fl = 26
-    stick = t > t_col
-    for i in range(n_fl):
-        speed = 3 if fast else 1
-        ph = (((t - t0) * 0.5 * speed) + i / n_fl) % 1
+    stick = t > t_form
+    for i in range(26):
+        ph = (((t - t0) * 0.5 * (3 if fast else 1)) + i / 26) % 1
         x = (i * 53 + 17) % (W - 20) + 10
         if stick:
-            y = SURF - 6 - (i % 3) * 3 - (int(prog(t, t_sem, t_cr + 0.5) * 6) if fast else 0)
-            x += 0
+            y = SURF - 6 - (i % 3) * 3
         else:
-            y = SURF - 4 - ph * 160
-            x += int(6 * np.sin(ph * 9 + i))
-        if y < 30: continue
+            y = SURF - 4 - ph * 150; x += int(6 * np.sin(ph * 9 + i))
+        if y < 60: continue
         rect(c, x - 1, y - 1, 10, 6, NIGHT if not stick else SKIN_M)
         rect(c, x, y, 8, 4, SKIN); rect(c, x, y, 8, 1, WHITE if not stick else SKIN)
-    # croûte
-    if fast:
-        th = ease_io(prog(t, t_sem + 0.2, BOUNDS[3] - 0.3)) * 20
+    if stick:
+        th = ease_io(prog(t, t_form, Sd(2, 2) - 0.1)) * 20
         if th >= 1:
             top = SURF - 2 - th - 3 * np.sin(XX / 11.0) - 2 * np.sin(XX / 5.0 + 1)
             m = (YY >= top) & (YY < SURF + 2)
             c[m] = CRUST
             dither(c, m & (YY < top + 3), SKIN_D, 8)
             dither(c, m & (YY > SURF - 4), SEBUM, 4)
-    # étiquettes
     if t > t_seb:
         draw_text(c, [("SÉBUM", SEBUM)], 230, SURF + 72, 18, t=t)
         line(c, 196, SURF + 82, 176, SURF + 82, WHITE, 1)
     if t > t_cr:
-        draw_text(c, [("CROÛTE", WHITE)], 270, SURF - 60, 20)
-        line(c, 270, SURF - 36, 262, SURF - 18, WHITE, 1)
-    # titres
-    if t < t_sem:
-        if t > t_30 - 0.1:
-            n = int(30000 * ease_out(prog(t, t_30, t_30 + 0.7)))
-            s = f"{n:,}".replace(",", " ")
-            title(c, t, t_30 - 0.1, [(s, YELLOW)], 54, 40)
-            title(c, t, t_30 + 0.3, [("CELLULES / MIN", WHITE)], 104, 22)
-        else:
-            title(c, t, t0 + 0.05, [("TA PEAU", WHITE)], 66, 30)
+        draw_text(c, [("CROÛTE", WHITE)], 270, SURF - 64, 20)
+        line(c, 270, SURF - 40, 262, SURF - 22, WHITE, 1)
+    if fast:
+        badge(c, 312, 50, "×1000", size=16)
+    if t > t_30 - 0.1:
+        n = int(30000 * ease_out(prog(t, t_30, t_30 + 0.7)))
+        title(c, t, t_30 - 0.1, [(f"{n:,}".replace(",", " "), YELLOW)], 54 + TY, 40)
+        title(c, t, t_30 + 0.3, [("CELLULES / MIN", WHITE)], 100 + TY, 22)
+
+
+def s3_cheveux(c, t):
+    t0, t_br, t_fr = Sd(2, 2), Wd(2, "brillent"), Wd(2, "frite")
+    vgrad(c, 0, H, [NIGHT2, NIGHT3, NIGHT2])
+    # mèche de cheveux grasse (vue loupe)
+    for k in range(9):
+        x0 = 60 + k * 14
+        for y in range(170, 480, 2):
+            x = x0 + int(10 * np.sin(y / 40.0 + k * 0.6)) + (y - 170) // 12
+            rect(c, x - 1, y, 6, 2, NIGHT); rect(c, x, y, 4, 2, CRUST)
+            if (y + k * 7 + int(pose_t(t) * 24)) % 30 < 4 and t > t_br - 0.2:
+                rect(c, x + 1, y, 2, 2, SEBUM if (y // 30) % 2 else WHITE)
+    if t > t_br:
+        for k, (sx, sy) in enumerate([(90, 220), (150, 300), (120, 400), (180, 260)]):
+            sparkle(c, sx, sy, t + k * 0.2, WHITE)
+        title(c, t, t_br, [("GRAS !", SEBUM, "drip")], 70 + TY, 34)
     else:
-        d = 1 + int(29 * prog(t, t_sem, BOUNDS[3] - 0.3))
-        title(c, t, t_sem, [(f"J+{d}", YELLOW)], 54, 44)
-        badge(c, 312, 14, "×1000")
-        # chrono
-        cx, cy = 48, 30
-        circle(c, cx, cy, 14, WHITE, NIGHT)
-        a = (t - t_sem) * 20
-        line(c, cx, cy, cx + 10 * np.cos(a), cy + 10 * np.sin(a), RED, 2)
-        line(c, cx, cy, cx + 6 * np.cos(a / 12), cy + 6 * np.sin(a / 12), NIGHT, 2)
+        title(c, t, t0, [("TES CHEVEUX", WHITE)], 70 + TY, 30)
+    if t > t_fr - 0.1:
+        b = title_bounce(t, t_fr - 0.1, h=40) or 0
+        draw_text(c, [("=", WHITE)], 250, 300 + b, 40)
+        fry(c, 300, 400 + b, 1.3)
+        sparkle(c, 290, 330 + b, t, WHITE)
 
 
-# ---------------- scène 4 : rebondissement (pli de peau) ----------------
+def s3_bus(c, t):
+    t0, t_vide = Sd(2, 3), Wd(2, "vide")
+    shake = int(pose_t(t) * 12) % 2
+    bus(c, t)
+    seat(c, 40, 440 + shake); seat(c, 88, 440 + shake)
+    # les autres, tous serrés à droite
+    for k, x in enumerate((215, 245, 275, 305, 335)):
+        person(c, x, 470 + (shake if k % 2 else 0), t + k * 0.3, flip=True, clothespin=k % 2 == 0)
+    PIP_BOX["box"] = pip(c, 62, 432 + shake, t, pose="idle" if t < t_vide else "surprised",
+                         mood="smile" if t < t_vide else "sad", spots=3)
+    stink(c, 62, 390, t, n=3, h=24)
+    if t > t_vide - 0.2:
+        sparkle(c, 110, 400, t, YELLOW); sparkle(c, 98, 380, t + 0.3, YELLOW)
+        badge(c, 110, 350, "LIBRE", fg=RED, size=16)
+    title(c, t, t0, [("DANS LE BUS", WHITE)], 70 + TY, 30)
+    if t > t_vide:
+        title(c, t, t_vide, [("PLACE ", WHITE), ("VIDE", RED, "shake")], 116 + TY, 26)
+
+
+# ---------------- scène 4 : 3 MOIS — mycoses puis téléphone ----------------
 def fold_y(x):
     """Deux bosses de peau qui se rejoignent en un pli au centre."""
     d = (abs(x - 180) - 90) / 90.0
@@ -227,13 +302,20 @@ def fold_y(x):
 
 
 def s4(c, t):
+    if t < Sd(3, 3):
+        s4_pli(c, t)
+    else:
+        s4_tel(c, t)
+    stage_overlay(c, t, 3)
+
+
+def s4_pli(c, t):
     t0 = BOUNDS[3]
     t_pire, t_plis, t_ch, t_champ, t_gr, t_rou, t_inf = (
         Wd(3, "pire"), Wd(3, "plis"), Wd(3, "chauds"), Wd(3, "champ"), Wd(3, "gratte"),
         Wd(3, "rougit"), Wd(3, "s'infecte"))
     vgrad(c, 0, H, [NIGHT, NIGHT2, NIGHT2])
-    xs = np.arange(W)
-    top = np.array([fold_y(x) for x in xs])
+    top = np.array([fold_y(x) for x in range(W)])
     m = YY >= top[None, :]
     c[m] = SKIN
     dither(c, m & (np.abs(XX - 180) < 70), SKIN_M, 6)
@@ -243,12 +325,9 @@ def s4(c, t):
     c[dilate(edge) & ~m] = NIGHT
     yc = int(fold_y(180))
     rect(c, 179, yc - 2, 2, H - yc, SKIN_D); rect(c, 180, yc + 10, 1, H - yc, NIGHT2)
-    # croûtes de la scène précédente
     for x in (60, 100, 260, 310):
         y = int(fold_y(x))
-        a = 1 - prog(t, t_pire, t_pire + 0.4) * 0.0
         rect(c, x - 8, y, 16, 4, CRUST); rect(c, x - 6, y - 1, 10, 1, CRUST)
-    # chaleur + humidité
     if t > t_ch:
         for i in range(5):
             ph = ((t - t_ch) * 0.8 + i / 5) % 1
@@ -259,12 +338,9 @@ def s4(c, t):
         for i in range(6):
             x = 160 + (i * 7) % 40; y = int(fold_y(x)) + 4 + (i * 13) % 30
             rect(c, x, y, 2, 3, WATER)
-    # champignons
     spots = [(160, 0.0), (200, 0.1), (140, 0.2), (222, 0.3), (118, 0.42), (244, 0.5), (60, 0.62), (316, 0.7)]
     for x, d in spots:
-        y = int(fold_y(x)) + 1
-        mush(c, x, y, 8 + (x * 7) % 5, t - (t_champ + d))
-    # rougeurs + « microbes fâchés »
+        mush(c, x, int(fold_y(x)) + 1, 8 + (x * 7) % 5, t - (t_champ + d))
     if t > t_gr:
         lvl = int(4 + 10 * prog(t, t_rou, t_rou + 0.5))
         red = m & (np.abs(XX - 180) < 20 + 40 * prog(t, t_rou, t_rou + 0.6)) & (YY < top[None, :] + 40)
@@ -273,31 +349,47 @@ def s4(c, t):
         for i, x in enumerate((140, 220, 180)):
             p = ease_out(prog(t, t_inf + i * 0.1, t_inf + i * 0.1 + 0.25))
             if p > 0: bact(c, x, int(fold_y(x)) + 18, max(2, int(6 * p)), t, col=RED, dark=SKIN_D, angry=True, seed=i)
-    # Pip sur la bosse de droite
     px = 268; py = int(fold_y(px)) + 2
     sc = t > t_gr
     PIP_BOX["box"] = pip(c, px, py, t, pose="scratch" if sc else ("surprised" if t > t_champ else "idle"),
-                         mood="yuck" if sc else ("wow" if t > t_champ else "smile"), look=(-1, 1))
-    mush(c, px - 1, py - 32, 6, t - (t_champ + 0.55))  # champignon sur le bonnet
+                         mood="yuck" if sc else ("wow" if t > t_champ else "smile"), look=(-1, 1), spots=5)
+    mush(c, px - 1, py - 32, 6, t - (t_champ + 0.55))
     if sc:
         for k in range(3):
             if (int(pose_t(t) * 12) + k) % 3 == 0:
                 line(c, px - 18 - k * 3, py - 20 + k * 5, px - 12 - k * 3, py - 26 + k * 5, WHITE, 1)
     if t_pire - 0.2 < t < t_champ:
         draw_text(c, [("!", YELLOW)], px, py - 64, 24, t=t)
-    # titres
     if t < t_champ:
-        title(c, t, t0 + 0.05, [("SAUF QUE…", MUSH)], 66, 30)
+        title(c, t, Wd(3, "la"), [("SAUF QUE…", MUSH)], 70 + TY, 30)
         if t > t_plis:
             draw_text(c, [("PLI", WHITE)], 180, int(fold_y(180)) - 90, 18)
             line(c, 180, int(fold_y(180)) - 66, 180, int(fold_y(180)) - 12, WHITE, 1)
     else:
-        title(c, t, t_champ, [("MYCOSES", MUSH, "wave")], 62, 42)
+        title(c, t, t_champ, [("MYCOSES", MUSH, "wave")], 62 + TY, 42)
         if t > t_gr:
-            title(c, t, t_gr, [("ÇA GRATTE !", RED, "shake")], 118, 22)
+            title(c, t, t_gr, [("ÇA GRATTE !", RED, "shake")], 114 + TY, 22)
 
 
-# ---------------- scène 5 : réponse (rue vide) ----------------
+def s4_tel(c, t):
+    t0 = Sd(3, 3)
+    t_po, t_rep, t_msg = Wd(3, "potes"), Wd(3, "répondent"), Wd(3, "messages")
+    vgrad(c, 0, H, [NIGHT2, NIGHT3, NIGHT2])
+    phone(c, 70, 160, 220, 380)
+    draw_text(c, [("LES POTES (5)", WHITE)], 180, 168, 16, shadow=False)
+    msgs = [("CINÉ CE SOIR ?", t0 + 0.05), ("ALLÔ ???", t_rep), ("J'AI CHANGÉ DE T-SHIRT !", t_msg - 0.1)]
+    for k, (txt, tm) in enumerate(msgs):
+        if t > tm:
+            b = min(0, int(-10 * (1 - prog(t, tm, tm + 0.15))))
+            chat_bubble(c, 280, 216 + k * 70 + b, txt, BACT, seen=t > tm + 0.35, size=14 if len(txt) > 16 else 16)
+    # « en train d'écrire… » qui disparaît
+    if t_po < t < t_rep:
+        for k in range(3):
+            if (int(pose_t(t) * 6) + k) % 3: rect(c, 90 + k * 8, 480, 4, 4, GREY)
+    title(c, t, t0, [("0", RED), (" RÉPONSE", WHITE)], 70 + TY, 30)
+
+
+# ---------------- scène 5 : 1 AN — réponse, la rue se vide, le chat part ----------------
 PEOPLE = [(40, 1), (95, 1), (268, 0), (322, 0)]
 
 
@@ -316,40 +408,42 @@ def street(c, t):
 
 def s5(c, t):
     t0 = BOUNDS[4]
-    t_sv, t_mais, t_mal, t_monde, t_fuit = (Wd(4, "survis"), Wd(4, "mais"), Wd(4, "malade"),
-                                             Wd(4, "monde"), Wd(4, "fuit"))
+    t_sv, t_mais, t_mal, t_monde, t_fuit, t_chat = (Wd(4, "survis"), Wd(4, "mais"), Wd(4, "malade"),
+                                                     Wd(4, "monde"), Wd(4, "fuit"), Wd(4, "chat"))
     street(c, t)
     t_run = t_fuit - 0.25
     for i, (x, side) in enumerate(PEOPLE):
         if t < t_run:
             person(c, x, 492, t + i * 0.2, flip=(side == 0) if t > t_monde else (side == 1))
         else:
-            dx = (t - t_run) * 520 * (-1 if side else 1)
-            xx = x + dx
+            xx = x + (t - t_run) * 520 * (-1 if side else 1)
             if -40 < xx < W + 40:
                 person(c, xx, 492, t + i * 0.1, run=1, flip=(side == 1))
                 for k in range(3):
                     circle(c, xx - (-1 if side else 1) * (16 + k * 9), 488, 3 - k, WHITE)
-    # Pip
-    spots = int(8 * prog(t, t_mal, t_mal + 0.4))
+    spots = 5 + int(5 * prog(t, t_mal, t_mal + 0.4))
     mood = "sad" if t > t_fuit + 0.2 else ("stars" if t_sv <= t < t_mais else ("wow" if t > t_run else "smile"))
     PIP_BOX["box"] = pip(c, 180, 492, t, pose="happy" if t_sv <= t < t_mais else "idle", mood=mood,
-                         spots=spots, look=(0, 0) if t < t_run else ((-1, 0) if int(t * 3) % 2 else (1, 0)))
+                         spots=spots, look=(0, 0) if t < t_run else ((1, 0) if t > t_chat else (-1, 0)))
     stink(c, 180, 446, t, n=3, h=24)
-    if t > t_fuit + 0.3:
-        tx = W + 20 - (t - t_fuit - 0.3) * 160
-        tumbleweed(c, tx, 486 - abs(int(8 * np.sin((t - t_fuit) * 7))), t)
-    # titres
+    # le chat, valise à la main, quitte Pip
+    if t > t_chat - 0.3:
+        cx = 210 + (t - t_chat + 0.3) * 120
+        cat(c, int(cx), 494, t, flip=False)
     if t < t_sv - 0.05:
-        title(c, t, t0 + 0.05, [("1 AN", YELLOW), (" PLUS TARD…", WHITE)], 70, 26)
+        title(c, t, t0 + 0.6, [("PLUS TARD…", WHITE)], 74 + TY, 26)
     elif t < t_fuit:
-        title(c, t, t_sv, [("TU SURVIS", YELLOW)], 60, 38)
-        if t > t_mais: title(c, t, t_mais, [("MAIS…", RED)], 112, 26)
+        title(c, t, t_sv, [("TU SURVIS", YELLOW)], 60 + TY, 38)
+        if t > t_mais: title(c, t, t_mais, [("MAIS…", RED)], 110 + TY, 26)
         if t_sv < t < t_mais:
-            for k, (sx, sy) in enumerate([(60, 70), (300, 80), (80, 120), (285, 125)]):
+            for k, (sx, sy) in enumerate([(60, 110), (300, 120), (80, 160), (285, 165)]):
                 sparkle(c, sx, sy, t + k * 0.13, YELLOW)
+    elif t < t_chat:
+        title(c, t, t_fuit, [("ON TE ", WHITE), ("FUIT", RED, "shake"), (" !", WHITE)], 62 + TY, 40)
     else:
-        title(c, t, t_fuit, [("ON TE ", WHITE), ("FUIT", RED, "shake"), (" !", WHITE)], 62, 40)
+        title(c, t, t_chat, [("MÊME TON ", WHITE), ("CHAT", YELLOW, "shake")], 66 + TY, 34)
+        if t > Wd(4, "valises"): title(c, t, Wd(4, "valises"), [("ADIEU !", RED)], 114 + TY, 24)
+    stage_overlay(c, t, 4)
 
 
 # ---------------- scène 6 : objection (écran partagé) ----------------

@@ -190,3 +190,104 @@ def badge(c, x, y, txt, fg=RED, bg=WHITE, size=18):
     rect(c, x - w // 2 - 1, y - 2, w + 2, size + 6, NIGHT)
     rect(c, x - w // 2, y - 1, w, size + 4, bg)
     draw_text(c, [(txt, fg)], x, y - 2, size, outline=None, shadow=False)
+
+
+# ---------- décors « social » ----------
+def office(c, t):
+    c[:] = TILE_D
+    dither(c, YY > 300, NIGHT3, 3)
+    rect(c, 40, 120, 120, 150, NIGHT); rect(c, 44, 124, 112, 142, TILE)   # fenêtre
+    rect(c, 98, 124, 4, 142, NIGHT); rect(c, 44, 192, 112, 4, NIGHT)
+    for k in range(3): rect(c, 50 + k * 34, 236 - k * 18, 20, 30 + k * 18, GREY)
+    rect(c, 230, 150, 70, 50, WHITE); rect(c, 229, 149, 72, 1, NIGHT)       # tableau
+    for k in range(4): rect(c, 238, 160 + k * 10, 40 - k * 6, 3, (RED, WATER, BACT_D, YELLOW)[k])
+    rect(c, 0, 470, W, H - 470, GREY); rect(c, 0, 470, W, 1, NIGHT)
+    for x in range(0, W, 40): rect(c, x, 470, 1, H - 470, NIGHT3)
+    # bureau + écran
+    rect(c, 110, 430, 140, 10, CRUST); rect(c, 110, 430, 140, 2, SKIN_D)
+    rect(c, 120, 440, 6, 30, CRUST); rect(c, 234, 440, 6, 30, CRUST)
+    rect(c, 196, 392, 40, 30, NIGHT); rect(c, 199, 395, 34, 24, NIGHT3)
+    for k in range(3): rect(c, 202, 398 + k * 6, 10 + (k * 7 + int(t * 3)) % 18, 2, BACT)
+    rect(c, 212, 422, 8, 8, NIGHT)
+    # gobelet
+    rect(c, 136, 418, 10, 12, WHITE); rect(c, 136, 418, 10, 1, NIGHT)
+
+
+def bus(c, t):
+    c[:] = NIGHT3
+    # fenêtres + ville qui défile
+    for k in range(3):
+        x0 = 20 + k * 112
+        rect(c, x0 - 2, 168, 100, 124, NIGHT)
+        win = c[170:290, x0:x0 + 96]
+        win[:] = TILE
+        off = int(t * 160)
+        for j in range(8):
+            bx = (j * 70 - off + k * 112) % 560 - 100 - x0 + 20
+            hh = 40 + (j * 23) % 50
+            x1, x2 = max(0, bx), min(96, bx + 46)
+            if x2 > x1: win[120 - hh:, x1:x2] = GREY if j % 2 else NIGHT2
+    rect(c, 0, 296, W, 6, GREY)
+    rect(c, 0, 470, W, H - 470, NIGHT2)
+    for x in range(0, W, 20): rect(c, x, 470, 10, H - 470, NIGHT)
+    rect(c, 0, 140, W, 4, GREY)       # barre de maintien
+    for x in (60, 180, 300): rect(c, x, 144, 2, 20, GREY)
+
+
+def seat(c, x, y):
+    rect(c, x - 1, y - 41, 46, 62, NIGHT)
+    rect(c, x, y - 40, 44, 34, RED); rect(c, x, y - 6, 44, 26, RED)
+    rect(c, x, y - 7, 44, 2, NIGHT); rect(c, x + 4, y - 36, 36, 2, PIP_P)
+    rect(c, x + 18, y + 20, 8, 22, GREY)
+
+
+def phone(c, x, y, w=220, h=380):
+    rect(c, x - 4, y - 4, w + 8, h + 8, NIGHT); rect(c, x - 3, y - 3, w + 6, h + 6, BLACK)
+    rect(c, x, y, w, h, WHITE)
+    rect(c, x, y, w, 40, NIGHT3)
+    rect(c, x + w // 2 - 20, y - 2, 40, 4, BLACK)
+
+
+def chat_bubble(c, x_right, y, txt, col=BACT, seen=True, size=16):
+    tw = text_width(txt, size)
+    x0 = x_right - tw - 16
+    rect(c, x0 - 1, y - 1, tw + 18, size + 10, NIGHT)
+    rect(c, x0, y, tw + 16, size + 8, col)
+    draw_text(c, [(txt, NIGHT)], x0 + 8, y + 1, size, outline=None, shadow=False, center=False)
+    if seen:
+        draw_text(c, [("VU", GREY)], x_right - 12, y + size + 10, 12, outline=None, shadow=False)
+
+
+def cat(c, x, fy, t, flip=False):
+    tq = pose_t(t)
+    step = int(tq * 10) % 2
+    tmp = np.full_like(c, T_)
+    ox, oy = 30, 40
+    body = mask_ellipse(ox, oy - 12, 14, 8)
+    tmp[dilate(body)] = NIGHT; tmp[body] = SKIN_M
+    for k in range(3): rect(tmp, ox - 6 + k * 6, oy - 19, 2, 5, SKIN_D)     # rayures
+    head = mask_circle(ox + 14, oy - 22, 7)
+    tmp[dilate(head)] = NIGHT; tmp[head] = SKIN_M
+    for dx in (9, 17):
+        line(tmp, ox + dx, oy - 28, ox + dx + 2, oy - 34, NIGHT, 3); line(tmp, ox + dx, oy - 29, ox + dx + 1, oy - 32, SKIN_M, 1)
+    rect(tmp, ox + 15, oy - 24, 2, 2, BLACK); rect(tmp, ox + 19, oy - 24, 2, 2, BLACK)
+    line(tmp, ox + 15, oy - 19, ox + 19, oy - 20, NIGHT, 1)   # moue vexée
+    for k, dx in enumerate((-9, -3, 5, 11)):
+        lx = ox + dx + ((2 if (k + step) % 2 else -2))
+        line(tmp, ox + dx, oy - 6, lx, oy, NIGHT, 3)
+    line(tmp, ox - 14, oy - 14, ox - 22, oy - 26 + step * 2, NIGHT, 3)       # queue
+    line(tmp, ox - 14, oy - 14, ox - 22, oy - 26 + step * 2, SKIN_M, 1)
+    # valise
+    rect(tmp, ox + 18, oy - 16, 22, 16, NIGHT); rect(tmp, ox + 19, oy - 15, 20, 14, CRUST)
+    rect(tmp, ox + 26, oy - 20, 8, 5, NIGHT); rect(tmp, ox + 19, oy - 9, 20, 2, YELLOW)
+    rect(tmp, ox + 21, oy - 14, 3, 3, SOAP)
+    blit(c, tmp[0:oy + 2, 0:72], x - 30, fy - oy - 1, 1, flip)
+
+
+def fry(c, x, y, s=1.0):
+    for k, dx in enumerate((-12, -6, 0, 6, 12)):
+        h = int((34 + (k * 7) % 12) * s)
+        rect(c, x + dx - 1, y - h - 1, 6, h + 2, NIGHT)
+        rect(c, x + dx, y - h, 4, h, YELLOW); rect(c, x + dx + 3, y - h, 1, h, SEBUM)
+    rect(c, x - 19, y - 6, 39, 30, NIGHT); rect(c, x - 18, y - 5, 37, 28, RED)
+    rect(c, x - 12, y + 4, 24, 3, WHITE)

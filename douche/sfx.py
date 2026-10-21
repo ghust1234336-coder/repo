@@ -126,6 +126,23 @@ def s_bell():
         (np.sin(2 * np.pi * 22 * t) > -0.3)
 
 
+def s_stamp():
+    t = tt(0.3)
+    return 0.5 * square(np.linspace(160, 60, len(t)), t) * np.exp(-t * 14) + 0.2 * lowpass(noise(len(t)), 4) * np.exp(-t * 30)
+
+def s_gasp():
+    t = tt(0.3); return 0.3 * square(np.linspace(500, 900, len(t)), t, 0.25) * env(len(t), r=0.1)
+
+def s_msg():
+    t = tt(0.18)
+    a = square(1047, t, 0.25) * (t < 0.08) + square(1568, t, 0.25) * (t >= 0.08)
+    return 0.25 * a * env(len(t), r=0.04)
+
+def s_meow():
+    t = tt(0.45); f = 600 + 300 * np.sin(np.pi * t / t[-1]) - 200 * t
+    return 0.25 * square(f, t, 0.3) * np.sin(np.pi * t / t[-1])
+
+
 SFX = {k[2:]: v for k, v in globals().items() if k.startswith("s_")}
 
 # ---------- musique ----------

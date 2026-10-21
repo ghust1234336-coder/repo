@@ -19,37 +19,35 @@ Recette : voir `plan_maitre_video.md`, Partie A (reprise sans changement, sauf l
 | Musique | 120 BPM, la mineur → do majeur à la fin, chiptune sautillant « bêtise » |
 | Mot-choc | **PUE** (lettres qui tremblent, nuage vert qui s'échappe) |
 
-## B1. Structure
-| # | Rôle | Pip (famille d'interaction) | Durée cible |
-|---|---|---|---|
-| 1 | Accroche | utiliser_objet : ferme le robinet de la douche | ≈ 2,8 s |
-| 2 | Déclic | réagir : se bouche le nez | ≈ 6 s |
-| 3 | Mécanisme | **absent** | ≈ 7 s |
-| 4 | Rebondissement | subir : envahi par les champignons, se gratte | ≈ 6,5 s |
-| 5 | Réponse | réagir : seul, une boule d'herbe passe | ≈ 7 s |
-| 6 | Objection | agir_corps : renifle son aisselle, ravi | ≈ 6,5 s |
-| 7 | Conseil | **absent** | ≈ 6 s |
-| 8 | Fin | agir_corps : saute sur le bouton | ≈ 3 s |
+## B1. Structure (v2 : étape par étape + réactions des gens)
+Chaque étape s'ouvre sur un **tampon plein écran** (« JOUR 2 », « 1 MOIS », « 3 MOIS », « 1 AN ») et une **barre de progression J0 → 1 an** reste en haut de l'écran. Chaque étape finit par **une réaction sociale**.
 
-Mots qui arrivent **sur le mot lui-même** : « pue », « champignons », « fuit », « mains ».
+| # | Rôle | Étape | Plans | Pip | Durée réelle |
+|---|---|---|---|---|---|
+| 1 | Accroche | — | salle de bain, robinet, calendrier | utiliser_objet | 2,7 s |
+| 2 | Déclic | JOUR 2 | loupe aisselle → **bureau : les collègues reculent** | réagir | 7,2 s |
+| 3 | Mécanisme | 1 MOIS | coupe de peau → cheveux = frite → **bus : la place à côté reste vide** | se_deplacer | 11,2 s |
+| 4 | Rebondissement | 3 MOIS | pli + champignons → **téléphone : « Vu », 0 réponse** | subir | 10,3 s |
+| 5 | Réponse | 1 AN | rue : tu survis, **tout le monde fuit, le chat part avec sa valise** | réagir | 6,1 s |
+| 6 | Objection | — | écran partagé, ton nez s'habitue | agir_corps | 7,4 s |
+| 7 | Conseil | — | liste savon | absent | 4,5 s |
+| 8 | Fin | — | salle de bain, S'ABONNER | agir_corps | 3,6 s |
 
-## B2. Script
-| # | Scène | Voix off | Texte à l'écran | Balises / stab. / vitesse |
-|---|---|---|---|---|
-| 1 | Accroche | « Tu arrêtes la douche pendant un an. Il se passe quoi ? » | « **UN AN** SANS DOUCHE ? » | `[curious]` / 0,3 / 1,10 |
-| 2 | Déclic | « Ta sueur, toute seule, ne sent rien. » · « Ce sont les bactéries qui la mangent qui puent. » · « Ton aisselle devient leur buffet à volonté. » | « 0 ODEUR » → « ÇA **PUE** ! » → panneau « BUFFET » | `[surprised]` / 0,3 / 1,08 |
-| 3 | Mécanisme | « Ta peau perd trente mille cellules mortes par minute. » · « Avec le sébum, elles collent comme de la pâte. » · « En quelques semaines, une croûte brune apparaît. » | « 30 000 / MIN » · « J+30 » | `[curious]` / 0,45 / 1,06 |
-| 4 | Rebondissement | « Sauf que la croûte, c'est pas le pire. » · « Dans tes plis chauds, poussent des champignons. » · « Ça gratte, ça rougit… et ça s'infecte. » | « **MYCOSES** » | `[whispers]` sur « c'est pas le pire » / 0,4 / 1,05 |
-| 5 | Réponse | « Alors, un an sans douche ? Tu survis. » · « Mais ta peau tombe malade, et tout le monde te fuit. » | « TU SURVIS » → « ON TE **FUIT** ! » | `[playful]` / 0,5 / 1,05 |
-| 6 | Objection | « Mais alors, toi, tu sentirais ton odeur ? » · « Non ! Ton nez s'habitue en quelques minutes. » · « Tu serais le seul à ne rien sentir. » | « NON ! » · écran partagé « TOI » / « LES AUTRES » | `[mischievously]` / 0,3 / 1,06 |
-| 7 | Conseil | « Pas besoin d'une douche par jour. » · « Lave surtout tes aisselles, tes pieds, et tes mains. » | « AISSELLES · PIEDS · **MAINS** » | `[cheerful]` / 0,3 / 1,06 |
-| 8 | Fin | « Allez, file sous la douche ! Abonne-toi, y'a plein d'autres secrets ! » | « **Abonne**-toi / pour d'autres **secrets** ! » + bouton « S'ABONNER » et cloche | `[excited]` / 0,3 / 1,10 |
+Écart assumé à A6-1 : Pip incarne « toi » à chaque étape, il n'est donc absent que d'une scène entière (7), plus des plans loupe, cheveux et téléphone.
 
-≈ 150 mots. `NOMINAL = [2.8, 6.0, 7.0, 6.5, 7.0, 6.5, 6.0, 3.0]` (mis à l'échelle sur la voix réelle).
+## B2. Script (v2, 173 mots, 55,0 s)
+| # | Voix off |
+|---|---|
+| 1 | « Tu arrêtes la douche pendant un an. Il se passe quoi ? » |
+| 2 | « Jour deux : ta sueur, elle, ne sent rien. » · « Mais les bactéries la mangent, et ça pue. » · « Au bureau, tes collègues reculent d'un pas. » |
+| 3 | « Un mois : ta peau perd trente mille cellules par minute. » · « Avec le sébum, elles forment une croûte brune. » · « Tes cheveux, eux, brillent comme une frite. » · « Dans le bus, la place à côté de toi reste vide. » |
+| 4 | « Sauf qu'à trois mois, la croûte n'est plus le pire. » · « Dans tes plis chauds, poussent des champignons. » · « Ça gratte, ça rougit… et ça s'infecte. » · « Et tes potes ne répondent plus à tes messages. » |
+| 5 | « Un an plus tard ? Tu survis. » · « Mais ta peau est malade, et tout le monde te fuit. » · « Même ton chat fait ses valises. » |
+| 6 | « Mais alors, toi, tu sentirais ton odeur ? » · « Non ! Ton nez s'habitue en quelques minutes. » · « Tu serais le seul à ne rien sentir. » |
+| 7 | « Pas besoin d'une douche par jour. » · « Lave surtout tes aisselles, tes pieds, et tes mains. » |
+| 8 | « Allez, file sous la douche ! Abonne-toi, y'a plein d'autres secrets ! » |
 
-**Coût** : environ 1 050 caractères, balises comprises.
-
-**Si la vidéo dépasse 55 s**, couper dans cet ordre : « Ton aisselle devient leur buffet à volonté. » puis « Tu serais le seul à ne rien sentir. »
+**Si la vidéo doit raccourcir** : couper « Tes cheveux, eux, brillent comme une frite. » puis « Tu serais le seul à ne rien sentir. »
 
 ## B3. Exactitude
 - **Sueur inodore** : vrai. La sueur fraîche (eccrine et apocrine) ne sent presque rien ; l'odeur vient de bactéries cutanées (*Corynebacterium*, *Staphylococcus hominis*) qui transforment certains composés en thioalcools et acides gras volatils.
@@ -61,6 +59,8 @@ Mots qui arrivent **sur le mot lui-même** : « pue », « champignons », « fu
 - **« Tout le monde te fuit »** : effet comique, pas une donnée.
 - **Le nez s'habitue** : vrai, adaptation olfactive ; on cesse de percevoir une odeur constante en quelques minutes.
 - **Pas de douche quotidienne obligatoire** : avis courant des dermatologues ; lavage ciblé des zones à odeur et lavage des mains (geste clé contre la transmission des microbes).
+- **Calendrier** : l'odeur apparaît en un à deux jours, le gras des cheveux en quelques jours, la dermatite négligée en semaines ou mois, les mycoses des plis sur des semaines : les étapes sont des ordres de grandeur, pas des dates précises.
+- **Réactions des gens** (collègues, bus, potes, chat) : situations comiques, pas des données.
 - On **ne montre pas** : lésions réalistes, parasites, conseils médicaux chiffrés.
 
 ## B4. Mise en scène

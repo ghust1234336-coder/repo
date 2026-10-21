@@ -48,17 +48,23 @@ def events():
         (0.05, "shower"), (0.15, "pop"),
         (W(0, "douche") - 0.05, "squeak"), (W(0, "douche") + 0.25, "plic"),
         (W(0, "quoi"), "ticktack"),
-        (W(1, "rien"), "ding"),
+        (W(1, "jour") - 0.15, "stamp"), (W(1, "rien"), "ding"),
         (W(1, "bact"), "pop"), (W(1, "mangent"), "slurp"), (W(1, "mangent") + 0.35, "slurp"),
-        (W(1, "puent"), "fart"), (W(1, "puent") + 0.1, "pop"),
-        (W(1, "buffet"), "pop"),
-        (W(2, "trente"), "pop"), (W(2, "sébum"), "plic"), (W(2, "collent"), "slurp"),
-        (W(2, "semaines"), "ticktack"),
+        (W(1, "pue"), "fart"), (W(1, "pue") + 0.1, "pop"),
+        (S(1, 2) - 0.08, "whoosh"), (W(1, "reculent"), "gasp"),
+        (W(2, "un") - 0.15, "stamp"), (W(2, "trente"), "pop"), (W(2, "sébum"), "plic"),
+        (W(2, "sébum"), "ticktack"), (W(2, "croûte"), "slurp"),
+        (S(2, 2) - 0.08, "whoosh"), (W(2, "brillent"), "ding"), (W(2, "frite"), "pop"),
+        (S(2, 3) - 0.08, "whoosh"), (W(2, "vide"), "wind"),
+        (W(3, "trois") - 0.15, "stamp"),
         (W(3, "champ"), "mushpop"), (W(3, "champ") + 0.15, "mushpop"),
         (W(3, "champ") + 0.3, "mushpop"), (W(3, "champ") + 0.45, "mushpop"),
         (W(3, "gratte"), "scratch"), (W(3, "rougit"), "scratch"),
+        (S(3, 3) - 0.08, "whoosh"), (S(3, 3) + 0.05, "msg"), (W(3, "répondent"), "msg"),
+        (W(3, "messages") - 0.1, "msg"),
+        (W(4, "an") - 0.15, "stamp"),
         (W(4, "survis"), "ding"), (W(4, "malade"), "buzzer_soft"),
-        (W(4, "fuit") - 0.2, "zip"), (W(4, "fuit") + 0.4, "wind"),
+        (W(4, "fuit") - 0.2, "zip"), (W(4, "chat"), "meow"), (W(4, "valises"), "boing"),
         (W(5, "toi"), "pop"), (W(5, "non"), "buzzer"), (W(5, "nez"), "pop"),
         (W(5, "seul"), "ding"),
         (W(6, "douche"), "buzzer_soft"),
@@ -71,5 +77,5 @@ def events():
 
 # fenêtres musicales
 MUSIC_CUT = (W(4, "survis") - 0.75, W(4, "survis") - 0.15)  # silence avant la révélation
-FAST = (W(2, "semaines"), BOUNDS[3])                         # accéléré : +1 octave
+FAST = (W(2, "sébum"), S(2, 2))                         # accéléré : +1 octave
 WHISPER = (S(3, 0), S(3, 0, end=True))                       # musique en sourdine
