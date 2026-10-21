@@ -121,6 +121,7 @@ Un flash-back éventuel utilise une sous-palette de 6 teintes sépia.
 - Cache des prises dans `audio/takes/eleven/<voice_id>/` : une phrase déjà générée n'est pas refacturée.
 - Secours gratuit : `--henri` (edge-tts), même sortie.
 - **Balises** : 1 par phrase au plus, et **pas de `[laughs]` ni de `[sighs]` en milieu de scène explicative** (ils ajoutent 0,4 à 0,8 s de temps mort). Toute balise prononcée ou qui sonne faux est retirée de `ELEVEN_EXPRESSION`.
+- **Le « Non » reste sobre** (retour de l'épisode Lune) : quand une phrase commence par « Non » (réponse à une objection, verdict), il est dit **posément**, sans crier ni appuyer. Pas de « Non ! » avec point d'exclamation dans le script : écrire « Non, … » ou « Non. … ». La phrase qui suit porte l'info, pas le « Non ». À l'écran, pas de grand tampon rouge plein écran : une étiquette ou un mot surligné de taille normale suffit.
 
 ### Profils d'expressivité par rôle de scène
 | Rôle (voir A7) | Intention | Balises (v3) | Stabilité | Vitesse |
@@ -175,7 +176,7 @@ Construite sur le principe « **mais / donc** » : chaque scène commence par un
 | 3 | **Mécanisme** | Montrer « comment ça marche » en vue macro, coupe, plongée ou ralenti. L'animation parle seule. | **absent** | 6–7 s |
 | 4 | **Rebondissement** (≈ 40 % de la vidéo) | « Sauf que… » : une idée reçue cassée ou un détail inattendu. **Relance** l'attention au milieu. | oui (subit la scène) | 6–7 s |
 | 5 | **Réponse** | Réponse **nette** à la question du titre, mot-choc sur le mot (« NON ! », « PAUSE »…). Coupure musicale juste avant. | oui ou absent | 7–8 s |
-| 6 | **Objection** | « Mais alors… ? » : la question que le spectateur se pose à ce moment-là, avec une démonstration visuelle (écran partagé, comparaison). | oui | 7–8 s |
+| 6 | **Objection** | « Mais alors… ? » : la question que le spectateur se pose à ce moment-là, avec une démonstration visuelle (écran partagé, comparaison). Le « Non » de la réponse reste sobre (voir A4). | oui | 7–8 s |
 | 7 | **Le plus fou / conseil** | Un fait final qui donne envie de le raconter à quelqu'un, **ou** le conseil pratique qu'on retient. | absent ou réagit | 5–7 s |
 | 8 | **Fin** | Phrase courte qui **renvoie à l'accroche** (boucle : la dernière image ressemble à la première, pour le revisionnage) + abonnement en 1,5–2 s. | saute sur le bouton | 2–2,5 s |
 
