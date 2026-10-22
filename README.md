@@ -11,3 +11,9 @@ Skills in `.claude/skills/` load automatically in any Claude Code session that h
 | [anthropics/skills](https://github.com/anthropics/skills) | frontend-design, canvas-design, mcp-builder, webapp-testing, … (docx/pdf/pptx/xlsx/skill-creator/claude-api omitted: built in) |
 
 Upstream licenses are in `licenses/`.
+
+## Own skills
+
+| Skill | What it does |
+|---|---|
+| video-pip | Writes the full plan (`plan_<slug>_vox.md`) for an episode of the vertical short series « Comprendre un truc en 60 s » with Pip, from a single subject. |
