@@ -27,7 +27,7 @@ Recette : voir `../plan_maitre_video.md`, Partie A, avec **STYLE = vox** (collag
 | Grille des espèces (scène 4), labo (scène 7) | `Aedes aegypti CDC-Gathany.jpg` (700×470) · `Anopheles stephensi.jpeg` (3032×2008) | domaine public | CDC / James Gathany |
 | Parasite (scène 3) | `Plasmodium.jpg` (440×473) | domaine public | CDC (via Wikimedia Commons) |
 | La planète (scène 1) | `The Earth seen from Apollo 17.jpg` (déjà dans `lune/assets/src/earth_apollo17.jpg`) | domaine public | NASA / Apollo 17 |
-| Toundra (scène 6) | `Caribou herd.jpg` (3000×2047) : sert de fond de toundra, les caribous restent au loin | domaine public | Aaron Collins, U.S. Fish and Wildlife Service |
+| Toundra (scène 6) | prévue : `Caribou herd.jpg` (USFWS, domaine public) ; **non utilisée** (téléchargement refusé par Wikimedia), la toundra est dessinée en papier | — | — |
 
 **Écartées** (licence CC BY-SA, incompatible avec la règle « domaine public seulement ») : `Stade de France.jpg`, `Mosquito larvae.jpg`. Le stade et les larves sont dessinés en illustration papier.
 
@@ -47,25 +47,25 @@ Recette : voir `../plan_maitre_video.md`, Partie A, avec **STYLE = vox** (collag
 
 Mots qui arrivent **sur le mot lui-même** : **MORTEL**, **TAXI**, **PERSONNE**, **MÂLE**.
 
-## B2. Script (172 mots, ≈ 51 s à 3,4 mots/s)
-Identique à la version pixel. Les balises tiennent compte de la règle A4 (« Non » sobre : le script n'en contient pas).
+## B2. Script (167 mots, 55,6 s au rendu)
+Identique à la version pixel, avec la première coupe prévue appliquée : la première prise durait 59,4 s, donc les deux phrases du Grand Nord sont fusionnées et toutes les scènes passent à la vitesse 1,10 (comme l'épisode Lune). Les balises tiennent compte de la règle A4 (« Non » sobre : le script n'en contient pas).
 
 | # | Voix off | Texte à l'écran (bande papier, mot surligné) | Balise / stabilité / vitesse |
 |---|---|---|---|
 | 1 | « Et si tu effaçais tous les moustiques de la planète ? » | « Et si tu **effaçais** / tous les moustiques ? » | `[curious]` 0,3 / 1,10 |
-| 2 | « Bonne idée : c'est l'animal le plus mortel. » · « Rien qu'avec le paludisme, près de six cent mille morts par an. » · « Plus de sept Stades de France pleins, chaque année. » | « L'animal le plus **mortel** » · étiquette mono « ≈ 600 000 / AN » · « × 7 STADES » | `[surprised]` 0,3 / 1,08 |
-| 3 | « Mais ce n'est pas la piqûre qui tue : c'est un parasite. » · « La femelle l'aspire chez un malade, puis pique quelqu'un d'autre. » · « Pour les microbes, le moustique est un taxi. » | « un **parasite** » · « MALADE → TOI » (manuscrit) · « **TAXI** » | `[curious]` 0,45 / 1,06 |
-| 4 | « Sauf que sur trois mille cinq cents espèces, peu nous piquent. » · « Et les mâles ne piquent jamais : ils boivent du nectar. » · « Alors si tu les effaces tous… qui va les regretter ? » | « 3 500 espèces » · « mâles : **0 piqûre** » · « Qui va les **regretter** ? » | `[whispers]` sur « peu nous piquent » / 0,4 / 1,05 |
-| 5 | « Réponse des biologistes : presque personne. » · « Oiseaux, poissons et libellules mangeraient d'autres insectes. » · « Et on sauverait des centaines de milliers de vies. » | « Presque **personne** » · menu « autres insectes » · « des centaines de milliers de **vies** » | `[playful]` 0,5 / 1,05 |
-| 6 | « Mais alors, aucun animal n'en a besoin ? » · « Si : dans le Grand Nord, ils forment des nuages. » · « Là-bas, les poussins d'oiseaux migrateurs s'en régalent. » | « Aucun animal ? » · « **Grand Nord** » · « buffet pour **poussins** » | `[mischievously]` 0,3 / 1,06 |
-| 7 | « Alors les scientifiques visent seulement les espèces dangereuses. » · « Ils lâchent des mâles modifiés : leurs filles meurent jeunes. » | « On **vise** juste » · « mâles modifiés → 0 fille adulte » | `[excited]` 0,3 / 1,06 |
+| 2 | « Bonne idée : c'est l'animal le plus mortel. » · « Rien qu'avec le paludisme, près de six cent mille morts par an. » · « Plus de sept Stades de France pleins, chaque année. » | « L'animal le plus **mortel** » · étiquette mono « ≈ 600 000 / AN » · « × 7 STADES » | `[surprised]` 0,3 / 1,10 |
+| 3 | « Mais ce n'est pas la piqûre qui tue : c'est un parasite. » · « La femelle l'aspire chez un malade, puis pique quelqu'un d'autre. » · « Pour les microbes, le moustique est un taxi. » | « un **parasite** » · « MALADE → TOI » (manuscrit) · « **TAXI** » | `[curious]` 0,5 / 1,10 |
+| 4 | « Sauf que sur trois mille cinq cents espèces, peu nous piquent. » · « Et les mâles ne piquent jamais : ils boivent du nectar. » · « Alors si tu les effaces tous… qui va les regretter ? » | « 3 500 espèces » · « mâles : **0 piqûre** » · « Qui va les **regretter** ? » | `[whispers]` 0,5 / 1,10 |
+| 5 | « Réponse des biologistes : presque personne. » · « Oiseaux, poissons et libellules mangeraient d'autres insectes. » · « Et on sauverait des centaines de milliers de vies. » | « Presque **personne** » · menu « autres insectes » · « des centaines de milliers de **vies** » | `[playful]` 0,5 / 1,10 |
+| 6 | « Mais alors, aucun animal n'en a besoin ? » · « Si : dans le Grand Nord, les poussins d'oiseaux migrateurs s'en régalent. » | « Aucun animal ? » · « **Grand Nord** » · « buffet pour **poussins** » | `[mischievously]` 0,3 / 1,10 |
+| 7 | « Alors les scientifiques visent seulement les espèces dangereuses. » · « Ils lâchent des mâles modifiés : leurs filles meurent jeunes. » | « On **vise** juste » · « mâles modifiés → 0 fille adulte » | `[excited]` 0,3 / 1,10 |
 | 8 | « Celui-là, tu peux le garder : c'est un mâle. » · « Abonne-toi, y'a plein d'autres secrets ! » | « C'est un **mâle** » · bouton « S'ABONNER » | `[excited]` 0,3 / 1,10 |
 
 `NOMINAL = [2.9, 8.2, 8.0, 8.8, 6.2, 6.8, 5.0, 3.8]`
 
 **Coût** : environ 1 150 caractères, balises comprises.
 
-**Si la vidéo dépasse 55 s** : fusionner les phrases 2 et 3 de la scène 6 (« Si : dans le Grand Nord, les poussins d'oiseaux migrateurs s'en régalent. »), puis couper « Plus de sept Stades de France pleins, chaque année. » (les stades restent à l'écran).
+**Si la vidéo dépasse encore 55 s** (fusion de la scène 6 déjà faite) : couper « Plus de sept Stades de France pleins, chaque année. » (les stades restent à l'écran).
 
 **Glyphes** (vérifiés avec Pillow sur les polices de `lune/assets/`) : « → » n'existe ni en DM Mono ni en Nothing You Could Do, seulement en Work Sans Bold ; « ≈ » existe en DM Mono et en Work Sans, pas en manuscrit. Donc : « MALADE > TOI » en manuscrit (ou une flèche tracée au feutre), « ≈ 600 000 / AN » en mono, « mâles modifiés → 0 fille adulte » en Work Sans Bold.
 
