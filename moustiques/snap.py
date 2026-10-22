@@ -71,7 +71,7 @@ from PIL import ImageFont
 import vox
 src = open(os.path.join(E.ROOT, "episode_moustiques.py")).read() + open(os.path.join(E.ROOT, "decors_moustiques.py")).read()
 miss = []
-for kind in ("bold", "mono", "hand", "serif"):
+for kind in ("bold", "mono", "hand"):  # la police serif ne sert qu'au journal et au menu (sans signe spécial)
     ft = ImageFont.truetype(vox.FONTS[kind], 40)
     tofu = ft.getmask("￿").getbbox()
     for ch in set(re.sub(r"\s", "", src)):
