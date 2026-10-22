@@ -67,7 +67,7 @@ Identique à la version pixel. Les balises tiennent compte de la règle A4 (« N
 
 **Si la vidéo dépasse 55 s** : fusionner les phrases 2 et 3 de la scène 6 (« Si : dans le Grand Nord, les poussins d'oiseaux migrateurs s'en régalent. »), puis couper « Plus de sept Stades de France pleins, chaque année. » (les stades restent à l'écran).
 
-**Glyphes à vérifier** (DM Mono n'a ni « → » ni « ≈ ») : écrire « MALADE > TOI » et « ~ 600 000 / AN » en mono, ou passer ces deux étiquettes en manuscrit (Nothing You Could Do) après vérification de ses glyphes.
+**Glyphes** (vérifiés avec Pillow sur les polices de `lune/assets/`) : « → » n'existe ni en DM Mono ni en Nothing You Could Do, seulement en Work Sans Bold ; « ≈ » existe en DM Mono et en Work Sans, pas en manuscrit. Donc : « MALADE > TOI » en manuscrit (ou une flèche tracée au feutre), « ≈ 600 000 / AN » en mono, « mâles modifiés → 0 fille adulte » en Work Sans Bold.
 
 ## B3. Exactitude
 Mêmes faits et mêmes sources que `plan_moustiques_pixel.md`, B3 (OMS *World Malaria Report*, Fang 2010 dans *Nature*, Oxitec, Target Malaria). En plus, pour les images :
@@ -85,7 +85,7 @@ Mêmes faits et mêmes sources que `plan_moustiques_pixel.md`, B3 (OMS *World Ma
 
 **2. Déclic — podium** *(Pip : réagir)*
 - Sur « mortel » : podium en carton, découpages requin, serpent et silhouette humaine sur les marches basses ; Zézette sur la plus haute, pattes arrière levées. « mortel » passé au surligneur ; Pip, au pied du podium, « ! » au feutre au-dessus de sa tête.
-- Sur « paludisme » : étiquette mono sur fond jaune, compteur qui défile jusqu'à « ~ 600 000 / AN ».
+- Sur « paludisme » : étiquette mono sur fond jaune, compteur qui défile jusqu'à « ≈ 600 000 / AN ».
 - Sur « Stades » : sept stades dessinés (vue de dessus, ovale vert et gradins gris) qui se remplissent de points un par un, « × 7 » manuscrit. Sons : tampon, tic-tac de compteur, pop à chaque stade.
 
 **3. Mécanisme — planche annotée** *(Pip absent)*
