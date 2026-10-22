@@ -60,6 +60,31 @@ Tampon de chronologie (C3) : écran assombri, **bandeau papier surligné** qui c
 ### Variante `flat` (sans collage)
 Pour un sujet très « abstrait » (maths, cerveau), un **« flat cartoon »** façon Kurzgesagt (formes rondes, aplats, fond sombre avec lueurs) : même moteur `vox.py`, sans texture papier, sans bord blanc ni photos.
 
+### Variante `noir` (minimaliste, fond noir)
+Un style épuré et « pro », façon motion design de marque ou documentaire haut de gamme : beaucoup de vide, peu d'éléments, chaque mouvement est précis. À choisir pour les sujets sérieux, tech, économie, psychologie, ou quand on veut un ton plus adulte. Toutes les autres règles (rythme, voix, structure A7, vérifications A8) restent les mêmes ; seul l'habillage change.
+
+| Élément | Version Noir |
+|---|---|
+| Fond | noir profond `#0a0a0c`, avec un **dégradé radial très léger** (centre `#16161b`) pour donner de la profondeur. Pas de texture papier. Grain très discret (3 %) ou aucun, pas de vignette marquée. |
+| Couleurs | blanc cassé `#f2f2f0` pour le texte, gris `#8a8a93` pour le secondaire, gris foncé `#2a2a30` pour les axes et les grilles, **une seule couleur d'accent** par épisode (choisie en B0 : ambre `#ffb020`, cyan `#3ad6ff`, rouge `#ff4d4d`…). Rien d'autre : la palette thème de 8 à 12 couleurs ne s'applique pas. |
+| Formes | **traits fins** (4–6 px) qui se tracent (ligne qui avance), cercles, points, flèches fines, icônes géométriques simples. Pas d'ombre portée, pas de bord blanc, pas de tremblement (`boil`). |
+| Titres | Work Sans Bold, grand, **en casse normale** (pas tout en capitales), aligné à gauche à x = 90. Apparition en fondu + glissement de 24 px vers le haut (0,3 s, ease-out). Le mot-clé est **dans la couleur d'accent** (pas de surligneur). |
+| Annotations | trait fin dans la couleur d'accent qui se dessine ; étiquettes en DM Mono, petites, gris clair, reliées à l'objet par une ligne fine. Pas d'écriture manuscrite. |
+| Données | c'est le cœur du style : **grands chiffres** en DM Mono qui défilent (compteur), axes fins gris, courbe ou barre dans la couleur d'accent, une seule donnée mise en avant à la fois. |
+| Vraies images | rares. En **noir et blanc**, contraste fort, fondues dans le noir par un masque radial, ou dans un cadre fin gris. Mêmes règles de licence que le style Vox. |
+| Sous-titres | **pas de bande blanche** : texte blanc Work Sans Bold 60 px, casse normale, ombre très douce pour la lisibilité ; le mot en cours passe dans la couleur d'accent. |
+| Caméra | fixe ou zoom très lent (+2 % par scène), toujours en ease-in-out. |
+| Transitions | entre scènes : **fondu au noir court** (0,25 s) ou **masque circulaire** qui s'ouvre depuis l'objet suivant ; entre plans : coupes franches. Pas de papier déchiré. |
+| Chronologie | tampon remplacé par le repère de temps en grand (DM Mono, blanc) qui apparaît au centre puis remonte en haut ; barre de progression en trait fin gris, remplissage dans la couleur d'accent. |
+| Mot-choc | effet sobre : lettres qui s'allument une à une, ou léger décalage (glitch d'une image). |
+| Pip | **version « ligne »** : silhouette au trait fin blanc, yeux dans la couleur d'accent, aucun costume ou un seul détail au trait. ≤ 12 % de la largeur. **Absent d'au moins 3 scènes** : dans ce style, c'est l'information qui est la star. |
+| Musique et sons | ambiance plus calme : pad grave, pulsation douce, quelques notes de piano ou de synthé, 90 à 105 BPM. Bruitages secs et discrets : clics, ticks, whoosh doux, « bip » d'interface. **Pas de sons papier** (feuille, ciseaux, tampon, machine à écrire). |
+
+- **Minimaliste ne veut pas dire immobile** : la règle « un changement visuel au moins toutes les 2 s » s'applique toujours (un trait qui se trace, un chiffre qui défile, un élément qui entre).
+- **Au plus 3 éléments à l'écran en même temps** (hors sous-titres). Si une scène en demande plus, la découper en deux plans.
+- La mise en page et les zones interdites (bas de l'écran, colonne de droite) sont les mêmes que pour le style Vox.
+- **Moteur** : ce style demande un mode `noir` dans `vox.py` (fond sans papier, `Sprite` sans bord ni ombre ni `boil`, titres en fondu, sous-titres sans bande). Ce mode n'existe pas encore : le signaler dans le plan quand ce style est choisi.
+
 ### Le personnage-sujet (optionnel)
 Quand le sujet a un « acteur » (un moustique, un virus, une molécule, une planète…), on lui donne une **petite personnalité** (effronté, paresseux, pressé…) et un tic visuel (lever les pattes, cligner, tourner sur lui-même). Il devient le deuxième personnage, et Pip peut s'effacer dans les scènes où il est la star.
 - De préférence **une vraie photo détourée** (la Lune NASA, le moustique CDC), avec au plus une touche cartoon collée par-dessus (deux yeux en papier).

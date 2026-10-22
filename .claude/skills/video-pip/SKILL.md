@@ -1,18 +1,24 @@
 ---
 name: video-pip
-description: Écrit le plan complet d'un épisode de la série de vidéos courtes verticales « Comprendre un truc en 60 s » avec Pip (style Vox, collage papier, moteur vox.py, voix ElevenLabs). À utiliser dès que l'utilisateur donne un sujet de vidéo (« Sujet : … »), demande un plan_<slug>_vox.md, un nouvel épisode avec Pip, ou veut réécrire / vérifier le script d'un épisode.
+description: Écrit le plan complet d'un épisode de la série de vidéos courtes verticales « Comprendre un truc en 60 s » avec Pip (style Vox en collage papier, ou style Noir minimaliste sur fond noir ; moteur vox.py, voix ElevenLabs). À utiliser dès que l'utilisateur donne un sujet de vidéo (« Sujet : … »), demande un plan_<slug>_vox.md ou plan_<slug>_noir.md, un nouvel épisode avec Pip, ou veut réécrire / vérifier le script d'un épisode.
 ---
 
 # Plan d'épisode « Comprendre un truc en 60 s » avec Pip
 
-Entrée : un **sujet**. Sortie : `plan_<slug>_vox.md`, avec les sections B0 à B5 remplies.
+Entrée : un **sujet**, et éventuellement un style. Sortie : `plan_<slug>_vox.md` (ou `plan_<slug>_noir.md` en style Noir), avec les sections B0 à B5 remplies.
+
+**Deux styles visuels** (détails dans la recette, A2) :
+- **Vox** (par défaut) : collage papier, vraies photos découpées, surligneur jaune, ton ludique.
+- **Noir** : minimaliste et épuré, fond noir, traits fins, une seule couleur d'accent, ton plus pro et adulte.
+
+Si l'utilisateur nomme un style (« style noir », « minimaliste », « fond noir »…), le prendre. Sinon, choisir celui qui sert le mieux le sujet et le ton, et le dire en une ligne.
 
 Fichiers de référence (à lire au moment où l'étape en a besoin) :
 - `references/recette.md` : la recette commune (Partie A). Leçons, format, style Vox, rythme, voix ElevenLabs, musique, Pip, structure de rétention, vérifications. **Elle ne change pas d'un épisode à l'autre**, sauf la palette thème et les bruitages propres au sujet.
 - `references/gabarit.md` : le gabarit à remplir (Partie B, sections B0 à B5).
 - `references/fabrication.md` : les fichiers du projet et les commandes (Partie C). Ne le lire que si l'utilisateur passe à la fabrication.
 
-Le fichier de sortie commence par `# Plan vidéo — « <Titre> » avec Pip (style Vox)`, puis la ligne « Recette : voir plan_maitre_video.md, Partie A », puis B0 à B5.
+Le fichier de sortie commence par `# Plan vidéo — « <Titre> » avec Pip (style Vox)` (ou `(style Noir)`), puis la ligne « Recette : voir plan_maitre_video.md, Partie A », puis B0 à B5.
 
 La voix off se fait **toujours avec ElevenLabs** (voix Léo, voir recette A4). Aucun autre service de synthèse vocale.
 
@@ -38,8 +44,8 @@ La voix off se fait **toujours avec ElevenLabs** (voix Léo, voir recette A4). A
    - débit estimé par scène (mots ÷ durée cible) entre 3,2 et 3,6 mots/s, jamais sous 2,8 ;
    - le fil (A8-11) : pour chaque scène, « Cette scène rapproche de la réponse à <question> parce que… ».
    Si une règle casse, corriger le script avant de continuer.
-7. **Choisir les visuels** : décor du quotidien pour l'accroche, coupe annotée / schéma / graphique pour le mécanisme, écran partagé ou balance pour l'objection, une vraie photo du domaine public dès qu'elle existe. Un changement visuel toutes les 2 s au plus. Respecter les zones interdites (bas de l'écran, colonne de droite).
-8. **Distribuer Pip** : absent d'au moins 2 scènes, familles d'interaction alternées, gags calés sur la phrase en cours. Remplir `PIP_ACTIONS`.
-9. **Palette thème, musique, bruitages propres**, et images d'archive du domaine public (NASA, NOAA, CDC, USFWS…) : vérifier la licence (jamais CC BY-SA), noter le crédit.
+7. **Choisir les visuels** : décor du quotidien pour l'accroche, coupe annotée / schéma / graphique pour le mécanisme, écran partagé ou balance pour l'objection, une vraie photo du domaine public dès qu'elle existe. Un changement visuel toutes les 2 s au plus. Respecter les zones interdites (bas de l'écran, colonne de droite). En style **Noir** : au plus 3 éléments à l'écran à la fois, traits fins, grands chiffres, photos en noir et blanc, et une note dans le plan disant que le mode `noir` de `vox.py` reste à écrire.
+8. **Distribuer Pip** : absent d'au moins 2 scènes (3 en style Noir, où Pip est en version « ligne »), familles d'interaction alternées, gags calés sur la phrase en cours. Remplir `PIP_ACTIONS`.
+9. **Palette thème (en style Noir : une seule couleur d'accent), musique, bruitages propres** (en style Noir : sons d'interface, jamais de sons papier), et images d'archive du domaine public (NASA, NOAA, CDC, USFWS…) : vérifier la licence (jamais CC BY-SA), noter le crédit.
 10. **Écrire la section Exactitude (B3)** avec un lien de source par fait, puis désigner les 2 phrases à couper si la vidéo approche 60 s.
-11. **Écrire** `plan_<slug>_vox.md` dans le dossier de travail, sections B0 à B5 remplies.
+11. **Écrire** `plan_<slug>_vox.md` (ou `plan_<slug>_noir.md`) dans le dossier de travail, sections B0 à B5 remplies.

@@ -11,7 +11,7 @@
 | Titres de secours | <2 autres titres> |
 | Réponse en une phrase | <la réponse que donne la scène 5> |
 | Ton | <ludique / mystérieux / « beurk-rigolo » / émerveillé…> |
-| Variante | `vox` (collage papier) ou `flat` — voir A2 |
+| Variante | `vox` (collage papier), `flat` ou `noir` (minimaliste, fond noir) — voir A2. En `noir`, donner la couleur d'accent à la place de la palette thème. |
 | Images d'archive | <photos du domaine public : source, fichier, licence vérifiée, crédit> |
 | STRUCTURE | `classique` (A7) ou `chronologie` (variante A7) |
 | Étapes (si chronologie) | <3 ou 4 repères, ex. Jour 2 / 1 mois / 3 mois / 1 an> |

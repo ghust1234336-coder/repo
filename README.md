@@ -16,4 +16,4 @@ Upstream licenses are in `licenses/`.
 
 | Skill | What it does |
 |---|---|
-| video-pip | Writes the full plan (`plan_<slug>_vox.md`) for an episode of the vertical short series « Comprendre un truc en 60 s » with Pip, from a single subject. |
+| video-pip | Writes the full plan for an episode of the vertical short series « Comprendre un truc en 60 s » with Pip, from a single subject, in two visual styles: Vox (paper collage) or Noir (minimalist, black background). |
